@@ -1,0 +1,122 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &3232701881709417875
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3232701881709417885}
+  - component: {fileID: 3232701881709417874}
+  - component: {fileID: 3395818054273970770}
+  m_Layer: 0
+  m_Name: GameManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3232701881709417885
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3232701881709417875}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3232701881709417874
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3232701881709417875}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f390fcf06c574e440b619a8c43318254, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  xp: 0
+  xpNeeded: 1000
+  level: 0
+  coins: 0
+  slider: {fileID: 0}
+  coinText: {fileID: 0}
+  xMaxCorner: 19
+  xMinCorner: 1
+  yMaxCorner: 8
+  yMinCorner: 1.5
+  BoxSpawnMax: 30
+  BoxSpawnMin: 1
+  xpDuck: {fileID: 5260089664678815758, guid: 8d42d4d99b8408f43ae3396917648fc2, type: 3}
+  present: {fileID: 8520848832866700874, guid: 17e64932cfdc533478bb937a15fbdcc3, type: 3}
+  coinPackage: {fileID: 4133283430949652805, guid: 7ff2d430ee0ee91439c1d0a929e77a05, type: 3}
+  duckArray:
+  - {fileID: 5492861363013521108, guid: 183e98f1993dd7940970cf365b49a3fb, type: 3}
+  - {fileID: 4470769497532776257, guid: 5c28daea1449f8042b67ac3704ce4a45, type: 3}
+  - {fileID: 1259434028120378323, guid: 7d36f3bd83764394bb76459df9ee1e83, type: 3}
+  - {fileID: 6264924107897459860, guid: e0e8911b47124184fbc7f64f937d023f, type: 3}
+  - {fileID: 7057668394916391857, guid: 8fb853f8fa4e1c548b0de8c91847e3a5, type: 3}
+  - {fileID: 3570653135636314633, guid: c7e946b92eadf6848bf3d6ba47bc0598, type: 3}
+  - {fileID: 33389788374067861, guid: 07d64b17b9831394ba3feaf7b0c09fd3, type: 3}
+  - {fileID: 7314541112437088870, guid: 6918fd10a467e4b49a3487aa6778d563, type: 3}
+  - {fileID: 7470101228787015201, guid: cf399c397887d324e85c9793a2c33fd6, type: 3}
+  - {fileID: 8090185349416038977, guid: 745a655c700919648b0321a9dbe2214a, type: 3}
+  - {fileID: 1583156999529923242, guid: 35d48bc0a92ebab4c8356e654185301d, type: 3}
+  - {fileID: 1868866044905124657, guid: 414d7f6bd236af142b2850a2e5805ce7, type: 3}
+  - {fileID: 3586511452056897, guid: c6929fdc240cb544682cc4d8fd3744ea, type: 3}
+  - {fileID: 5149246662795466482, guid: 482bcdc34ec269d45b8d5bc69e806e58, type: 3}
+  avalibleDucksList: []
+  extraDuck: {fileID: 2369829247882363136, guid: 47e4929624e689348ab156d86158c117, type: 3}
+  gameManagerSetup:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 3395818054273970770}
+        m_TargetAssemblyTypeName: Saving, Assembly-CSharp
+        m_MethodName: Startup
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: Settings, Assembly-CSharp
+        m_MethodName: Startup
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &3395818054273970770
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3232701881709417875}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4184948d23ef9b64ab825938b7a231b3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  additionalDucksToCount:
+  - {fileID: 8936842960399145414, guid: be5558d783d9a374dbd29260e9e84b68, type: 3}
+  - {fileID: 2369829247882363136, guid: 47e4929624e689348ab156d86158c117, type: 3}
+  timeBetweenAutosaves: 30
