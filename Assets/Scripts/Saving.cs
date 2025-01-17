@@ -1,20 +1,24 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
-using Unity.Mathematics;
-using Unity.VisualScripting;
+using System.Linq;
+using Firebase.Auth;
+using Firebase.Database;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Random = UnityEngine.Random;
 public class Saving : MonoBehaviour
 {
     int amountOfThisDuck;
-    [SerializeField, Tooltip("Which ducks to save in addition to the ones in the GameManager array")] GameObject[] additionalDucksToCount;
-    List<GameObject> allDucks = new();
+    [SerializeField, Tooltip("Which ducks to save in addition to the ones in the GameManager array")] Duck[] additionalDucksToCount;
+    List<Duck> allDucks = new();
     [HideInInspector] public int timeBetweenAutosaves = 30;
     float autosaveTimer;
     static public Saving instance;
+    PlayerData defaultData;
+    FirebaseDatabase database;
+    FirebaseUser user;
 
-    void Start()
+    void Awake()
     {
         if (instance == null)
         {
@@ -24,10 +28,22 @@ public class Saving : MonoBehaviour
         {
             Destroy(this);
         }
+        database = FirebaseDatabase.DefaultInstance;
+    }
+
+    void SetDefaultData()
+    {
+        defaultData = new PlayerData();
+        defaultData.coins = GameManager.Instance.coins;
+        defaultData.xp = GameManager.Instance.xp;
+        defaultData.xpNeeded = GameManager.Instance.xpNeeded;
+        defaultData.level = GameManager.Instance.level;
+        defaultData.ownedDucks.Add(GameManager.DuckTypes.DefaultDuck);
     }
 
     public void Startup() //Called when GameManager is setup
     {
+        SetDefaultData();
         foreach (var item in additionalDucksToCount)
         {
             allDucks.Add(item);
@@ -52,24 +68,36 @@ public class Saving : MonoBehaviour
 
     public void SaveGame()
     {
-        //Save Ducks
-        for (int i = 0; i < allDucks.Count; i++)
+        PlayerData data = new PlayerData();
+        data.coins = GameManager.Instance.coins;
+        data.xp = GameManager.Instance.xp;
+        data.xpNeeded = GameManager.Instance.xpNeeded;
+        data.level = GameManager.Instance.level;
+
+        List<Duck> duckObjects = FindObjectsOfType<Duck>().ToList();
+        List<GameManager.DuckTypes> ownedDucks = new();
+        for (int i = 0; i < duckObjects.Count; i++)
         {
-            foreach (var duck in FindObjectsOfType<Duck>())
-            {
-                if (duck.duckType == allDucks[i].GetComponent<Duck>().duckType)
-                {
-                    amountOfThisDuck++;
-                }
-            }
-            PlayerPrefs.SetInt("AmountOfDuck#" + i, amountOfThisDuck);
-            //Debug.Log("Saved " + amountOfThisDuck + " ducks of type #" + i);
-            amountOfThisDuck = 0;
+            Duck duckObject = duckObjects[i];
+            ownedDucks.Add(duckObject.duckType);
         }
-        PlayerPrefs.SetInt("Coins", GameManager.Instance.coins);
-        PlayerPrefs.SetFloat("Xp", GameManager.Instance.xp);
-        PlayerPrefs.SetInt("XpNeeded", GameManager.Instance.xpNeeded);
-        PlayerPrefs.SetInt("Level", GameManager.Instance.level);
+
+        for (int i = 0; i < ownedDucks.Count; i++) //adds all the owned ducks to save data
+        {
+            data.ownedDucks.Add(ownedDucks[i]);
+        }
+
+        foreach (var duckGameObject in allDucks) //adds all the unowned ducks to save data
+        {
+            Duck duck = duckGameObject.GetComponent<Duck>();
+            if (!ownedDucks.Contains(duck.duckType) && duck.duckType != GameManager.Instance.extraDuck.duckType)
+            {
+                data.avalibleDucks.Add(duck.duckType);
+            }
+        }
+
+        PlayerPrefs.SetString("SaveData", JsonUtility.ToJson(data));
+        database.RootReference.Child(user.UserId).SetValueAsync(JsonUtility.ToJson(data));
 
         SaveSettings();
         Debug.Log("Saved");
@@ -83,38 +111,31 @@ public class Saving : MonoBehaviour
 
     public void LoadGame()
     {
-        //Load Values
-        GameManager.Instance.AddCoins(PlayerPrefs.GetInt("Coins", 0));
-        GameManager.Instance.SetXp(PlayerPrefs.GetFloat("Xp", 0), PlayerPrefs.GetInt("XpNeeded", GameManager.Instance.xpNeeded), PlayerPrefs.GetInt("Level", 0));
+        string defaultDataJson = JsonUtility.ToJson(defaultData);
+        PlayerData data = JsonUtility.FromJson<PlayerData>(PlayerPrefs.GetString("SaveData", defaultDataJson));
 
-        //Load Ducks
-        for (int i = 0; i < allDucks.Count; i++)
+        if (data == null)
         {
-            int amountToSpawn = PlayerPrefs.GetInt("AmountOfDuck#" + i, 0);
-            //Debug.Log("there are " + amountToSpawn + " ducks to load of type #" + i);
-            for (int j = 0; j < amountToSpawn; j++) //To spawn multiple of the same duck
-            {
-                Instantiate(allDucks[i], GameManager.Instance.GenerateRandomPosition(), Quaternion.Euler(0.0f, 0.0f, Random.Range(0.0f, 360.0f)));
-            }
-
-            if (amountToSpawn <= 0 && allDucks[i] != GameManager.Instance.extraDuck)
-            {
-                GameManager.Instance.avalibleDucksList.Add(allDucks[i]);
-            }
+            data = defaultData; //Reference copy, not value copy
         }
 
-        for (int i = 0; i < GameManager.Instance.avalibleDucksList.Count; i++) //Removes nulls from avalibleDucksList
+        GameManager.Instance.SetCoins(data.coins);
+        GameManager.Instance.SetXp(data.xp, data.xpNeeded, data.level);
+
+        for (int i = 0; i < data.ownedDucks.Count; i++)
         {
-            if (GameManager.Instance.avalibleDucksList[i] == null)
-            {
-                GameManager.Instance.avalibleDucksList.RemoveAt(i);
-            }
+            GameObject duckToSpawn = GetDuckByDuckType(data.ownedDucks[i]).gameObject;
+            Instantiate(duckToSpawn, GameManager.Instance.GenerateRandomPosition(), Quaternion.Euler(0.0f, 0.0f, Random.Range(0.0f, 360.0f)));
+        }
+
+
+        foreach (var duckType in data.avalibleDucks)
+        {
+            GameManager.Instance.avalibleDucksList.Add(GetDuckByDuckType(duckType));
         }
 
         LoadSettings();
-
         Debug.Log("Loaded Game");
-
     }
 
     void LoadSettings()
@@ -129,13 +150,11 @@ public class Saving : MonoBehaviour
     {
         PlayerPrefs.DeleteAll();
         Debug.LogWarning("Save Deleted");
-        SetDefaultData();
         ReloadScene();
     }
 
-    void SetDefaultData()
+    void ResetSettings()
     {
-        PlayerPrefs.SetInt("AmountOfDuck#" + 0, 1); //Always start with one default duck
         PlayerPrefs.SetInt("autosaveTime", 30);
         PlayerPrefs.SetInt("zoomAllowed", BoolToInt(true));
     }
@@ -146,6 +165,11 @@ public class Saving : MonoBehaviour
     }
 
     void OnApplicationQuit()
+    {
+        SaveGame();
+    }
+
+    void OnApplicationFocus()
     {
         SaveGame();
     }
@@ -179,4 +203,19 @@ public class Saving : MonoBehaviour
         Debug.LogWarning("input was " + input + " expected true or false, returning 0");
         return 0;
     }
+
+    public Duck GetDuckByDuckType(GameManager.DuckTypes DuckType)
+    {
+        return allDucks.Find(duck => duck.duckType == DuckType);
+    }
+}
+
+public class PlayerData
+{
+    public int coins;
+    public float xp;
+    public int xpNeeded;
+    public int level;
+    public List<GameManager.DuckTypes> ownedDucks = new();
+    public List<GameManager.DuckTypes> avalibleDucks = new();
 }

@@ -130,6 +130,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1320055589}
     m_Modifications:
+    - target: {fileID: 6441211600370044249, guid: d10470c9cef5b0447a43d2e56f6819d6, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6927342422926944649, guid: d10470c9cef5b0447a43d2e56f6819d6, type: 3}
       propertyPath: m_Name
       value: Finger 4
@@ -2672,6 +2676,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1320055589}
     m_Modifications:
+    - target: {fileID: 6441211600370044249, guid: d10470c9cef5b0447a43d2e56f6819d6, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6927342422926944649, guid: d10470c9cef5b0447a43d2e56f6819d6, type: 3}
       propertyPath: m_Name
       value: Finger 3
@@ -3609,6 +3617,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1320055589}
     m_Modifications:
+    - target: {fileID: 6441211600370044249, guid: d10470c9cef5b0447a43d2e56f6819d6, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6927342422926944649, guid: d10470c9cef5b0447a43d2e56f6819d6, type: 3}
       propertyPath: m_Name
       value: Finger 1
@@ -5501,6 +5513,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1320055589}
     m_Modifications:
+    - target: {fileID: 6441211600370044249, guid: d10470c9cef5b0447a43d2e56f6819d6, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6927342422926944649, guid: d10470c9cef5b0447a43d2e56f6819d6, type: 3}
       propertyPath: m_Name
       value: Finger 2
@@ -6559,10 +6575,6 @@ PrefabInstance:
       propertyPath: coinText
       value: 
       objectReference: {fileID: 1737831986}
-    - target: {fileID: 3232701881709417874, guid: c898657267fa8aa40b4466254e685f58, type: 3}
-      propertyPath: gameManagerSetup.m_PersistentCalls.m_Calls.Array.data[1].m_Target
-      value: 
-      objectReference: {fileID: 1645443679}
     - target: {fileID: 3232701881709417875, guid: c898657267fa8aa40b4466254e685f58, type: 3}
       propertyPath: m_Name
       value: GameManager
@@ -6620,12 +6632,16 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1320055589}
     m_Modifications:
+    - target: {fileID: 6441211600370044249, guid: d10470c9cef5b0447a43d2e56f6819d6, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6927342422926944649, guid: d10470c9cef5b0447a43d2e56f6819d6, type: 3}
       propertyPath: m_Name
       value: Finger 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6927342422926944654, guid: d10470c9cef5b0447a43d2e56f6819d6, type: 3}
-      propertyPath: m_RootOrder
+    - target: {fileID: 6927342422926944652, guid: d10470c9cef5b0447a43d2e56f6819d6, type: 3}
+      propertyPath: fingerNumber
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6927342422926944654, guid: d10470c9cef5b0447a43d2e56f6819d6, type: 3}

@@ -1,0 +1,10 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:keep="@string/firebase_database_url,@string/gcm_defaultSenderId,@string/google_storage_bucket,@string/project_id,@string/google_api_key,@string/google_crash_reporting_api_key,@string/google_app_id">
+  <string name="firebase_database_url" translatable="false">https://anker-92078-default-rtdb.europe-west1.firebasedatabase.app</string>
+  <string name="gcm_defaultSenderId" translatable="false">951113343203</string>
+  <string name="google_storage_bucket" translatable="false">anker-92078.firebasestorage.app</string>
+  <string name="project_id" translatable="false">anker-92078</string>
+  <string name="google_api_key" translatable="false">AIzaSyByQB92u7MPu3LRAsj1y0uHrX2HSpnAhwM</string>
+  <string name="google_crash_reporting_api_key" translatable="false">AIzaSyByQB92u7MPu3LRAsj1y0uHrX2HSpnAhwM</string>
+  <string name="google_app_id" translatable="false">1:951113343203:android:694992336ca941004a25d6</string>
+</resources>

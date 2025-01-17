@@ -14,7 +14,7 @@ public class Present : MonoBehaviour
         }
     }
 
-    public void PlaceDuck(GameObject duck)
+    public void PlaceDuck(Duck duck)
     {
         Instantiate(duck, transform.position, transform.rotation);
         Saving.instance.SaveGame();

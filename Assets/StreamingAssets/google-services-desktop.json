@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "951113343203",
+    "firebase_url": "https://anker-92078-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "anker-92078",
+    "storage_bucket": "anker-92078.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:951113343203:android:694992336ca941004a25d6",
+        "android_client_info": {
+          "package_name": "com.Yrgo.com.unity.template.mobile2D"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyByQB92u7MPu3LRAsj1y0uHrX2HSpnAhwM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

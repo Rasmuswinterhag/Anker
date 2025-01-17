@@ -14,6 +14,7 @@ public class Finger : MonoBehaviour
     bool hitEmpty;
     //references
     FocusDuck focusDuck;
+    SpriteRenderer sr;
 
     [SerializeField] List<Collider2D> colliders;
     [SerializeField] Collider2D trigger;
@@ -24,6 +25,7 @@ public class Finger : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        sr = GetComponent<SpriteRenderer>();
         focusDuck = FindObjectOfType<FocusDuck>();
 
         //Get all colliders and add them to a list of colliders
@@ -43,7 +45,7 @@ public class Finger : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.touchCount > fingerNumber)
+        if (Input.touchCount > fingerNumber) //Held down finger
         {
 
             Vector3 touchposition = Input.GetTouch(fingerNumber).position;
@@ -51,6 +53,7 @@ public class Finger : MonoBehaviour
             touch.z = transform.position.z;
 
             transform.position = touch;
+            sr.enabled = true;
         }
         else //let go of finger
         {
@@ -60,6 +63,7 @@ public class Finger : MonoBehaviour
             }
 
             transform.position = Vector3.zero;
+            sr.enabled = false;
             
             isTriggerd = false;
             timer = 0;
@@ -117,13 +121,10 @@ public class Finger : MonoBehaviour
         {
             isTriggerd = true;
             tappedDuck = other.gameObject;
-
-            //Debug.Log("hitduck");
         }
         else if (other.gameObject.CompareTag("KeepTriggerOn"))
         {
             hitEmpty = true;
-            //Debug.Log("hittriggerkeeper");
         }
         //dont run if started on nothing
     }

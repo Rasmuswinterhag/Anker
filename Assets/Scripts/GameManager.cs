@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using TMPro;
 using Unity.Mathematics;
@@ -29,11 +30,11 @@ public class GameManager : MonoBehaviour
     }
 
     //xp Stuff
-    public float xp;
+    [HideInInspector] public float xp;
     public int xpNeeded = 1000;
-    public int level;
+    [HideInInspector] public int level;
 
-    public int coins;
+    [HideInInspector] public int coins;
 
     //other stuff
     Vector3 midPoint = new Vector3(10.5f, 5f, 0f);
@@ -41,7 +42,7 @@ public class GameManager : MonoBehaviour
 
     [Header("References")]
     [SerializeField] Slider slider;
-    [SerializeField] TextMeshProUGUI coinText;
+    [SerializeField] TMP_Text coinText;
 
     [Header("Spawn Positions")]
     [SerializeField] float xMaxCorner;
@@ -58,9 +59,10 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject xpDuck;
     [SerializeField] GameObject present;
     [SerializeField] GameObject coinPackage;
-    public GameObject[] duckArray;
-    [HideInInspector] public List<GameObject> avalibleDucksList = new List<GameObject>();
-    public GameObject extraDuck;
+    public List<Duck> duckArray;
+    public List<Duck> avalibleDucksList = new();
+    public Duck extraDuck;
+    
 
     void Awake()
     {
@@ -153,7 +155,12 @@ public class GameManager : MonoBehaviour
     public void AddCoins(int amount)
     {
         coins += amount;
+        UpdateCoinText();
+    }
 
+    public void SetCoins(int amount)
+    {
+        coins = amount;
         UpdateCoinText();
     }
 

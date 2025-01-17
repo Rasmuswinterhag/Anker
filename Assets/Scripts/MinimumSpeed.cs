@@ -30,7 +30,6 @@ public class MinimumSpeed : MonoBehaviour
         }
         else if (speed <= minSpeed)
         {
-            //Debug.Log(speed);
             rb.velocity = rb.velocity * 1.1f;
         }
     }

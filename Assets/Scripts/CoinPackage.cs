@@ -7,7 +7,7 @@ public class CoinPackage : MonoBehaviour
 {
 
     [SerializeField] float speedNeeded = 1f;
-    
+
     [Header("Prefabs")]
     [SerializeField] GameObject coin;
 
@@ -23,13 +23,14 @@ public class CoinPackage : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D other)
     {
+        if (!other.gameObject.CompareTag("Duck")) { return; }
         Rigidbody2D otherRb = other.gameObject.GetComponent<Rigidbody2D>();
         float otherSpeed = otherRb.velocity.magnitude;
 
         if (otherSpeed <= 0)
         {
             otherSpeed = -otherSpeed;
-        }   
+        }
 
         if (otherSpeed >= speedNeeded || otherSpeed <= -speedNeeded)
         {
