@@ -117,6 +117,12 @@ public class Saving : MonoBehaviour
         PlayerPrefs.SetInt("zoomAllowed", BoolToInt(Settings.instance.allowZoom));
     }
 
+    public void ReloadSceneThenLoadGame()
+    {
+        ReloadScene();
+        LoadGame();
+    }
+
     public void LoadGame()
     {
         PlayerData data = new();
