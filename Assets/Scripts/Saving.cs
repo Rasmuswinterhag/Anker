@@ -60,15 +60,15 @@ public class Saving : MonoBehaviour
         }
     }
 
-    void Update()
-    {
-        autosaveTimer += Time.deltaTime;
-        if (autosaveTimer >= timeBetweenAutosaves)
-        {
-            autosaveTimer = 0;
-            SaveGame();
-        }
-    }
+    //void Update()
+    //{
+    //    autosaveTimer += Time.deltaTime;
+    //    if (autosaveTimer >= timeBetweenAutosaves)
+    //    {
+    //        autosaveTimer = 0;
+    //        SaveGame();
+    //    }
+    //}
 
     public void SaveGame()
     {
@@ -101,6 +101,10 @@ public class Saving : MonoBehaviour
         }
 
         //PlayerPrefs.SetString("SaveData", JsonUtility.ToJson(data));
+        foreach (var item in data.ownedDucks)
+        {
+            Debug.Log("Owned ducks: " + item);
+        }
         database.RootReference.Child("users").Child(user.UserId).SetRawJsonValueAsync(JsonUtility.ToJson(data));
 
         SaveSettings();
@@ -127,32 +131,32 @@ public class Saving : MonoBehaviour
             DataSnapshot snap = task.Result;
 
             data = JsonUtility.FromJson<PlayerData>(snap.GetRawJsonValue());
+
+            //string defaultDataJson = JsonUtility.ToJson(defaultData);
+            //PlayerData data = JsonUtility.FromJson<PlayerData>(PlayerPrefs.GetString("SaveData", defaultDataJson));
+
+            if (data == null)
+            {
+                data = defaultData; //Reference copy, not value copy
+            }
+
+            GameManager.Instance.SetCoins(data.coins);
+            GameManager.Instance.SetXp(data.xp, data.xpNeeded, data.level);
+
+            for (int i = 0; i < data.ownedDucks.Count; i++)
+            {
+                GameObject duckToSpawn = GetDuckByDuckType(data.ownedDucks[i]).gameObject;
+                Instantiate(duckToSpawn, GameManager.Instance.GenerateRandomPosition(), Quaternion.Euler(0.0f, 0.0f, Random.Range(0.0f, 360.0f)));
+            }
+
+            foreach (var duckType in data.avalibleDucks)
+            {
+                GameManager.Instance.avalibleDucksList.Add(GetDuckByDuckType(duckType));
+            }
+
+            LoadSettings();
+            Debug.Log("Loaded Game");
         });
-
-        //string defaultDataJson = JsonUtility.ToJson(defaultData);
-        //PlayerData data = JsonUtility.FromJson<PlayerData>(PlayerPrefs.GetString("SaveData", defaultDataJson));
-
-        if (data == null)
-        {
-            data = defaultData; //Reference copy, not value copy
-        }
-
-        GameManager.Instance.SetCoins(data.coins);
-        GameManager.Instance.SetXp(data.xp, data.xpNeeded, data.level);
-
-        for (int i = 0; i < data.ownedDucks.Count; i++)
-        {
-            GameObject duckToSpawn = GetDuckByDuckType(data.ownedDucks[i]).gameObject;
-            Instantiate(duckToSpawn, GameManager.Instance.GenerateRandomPosition(), Quaternion.Euler(0.0f, 0.0f, Random.Range(0.0f, 360.0f)));
-        }
-
-        foreach (var duckType in data.avalibleDucks)
-        {
-            GameManager.Instance.avalibleDucksList.Add(GetDuckByDuckType(duckType));
-        }
-
-        LoadSettings();
-        Debug.Log("Loaded Game");
     }
 
     void LoadSettings()
@@ -225,7 +229,15 @@ public class Saving : MonoBehaviour
 
     public Duck GetDuckByDuckType(GameManager.DuckTypes DuckType)
     {
-        return allDucks.Find(duck => duck.duckType == DuckType);
+        //return allDucks.Find(duck => duck.duckType == DuckType);
+        foreach (var duck in allDucks)
+        {
+            if (duck.duckType == DuckType)
+            {
+                return duck;
+            }
+        }
+        return null;
     }
 }
 
