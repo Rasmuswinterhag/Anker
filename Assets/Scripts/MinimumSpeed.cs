@@ -16,7 +16,7 @@ public class MinimumSpeed : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         speed = rb.velocity.magnitude;
 
