@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Firebase.Auth;
 using Firebase.Database;
+using Firebase.Extensions;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Random = UnityEngine.Random;
@@ -18,28 +19,6 @@ public class Saving : MonoBehaviour
     FirebaseDatabase database;
     FirebaseUser user;
 
-    void Awake()
-    {
-        if (instance == null)
-        {
-            instance = this;
-        }
-        else
-        {
-            Destroy(this);
-        }
-        database = FirebaseDatabase.DefaultInstance;
-    }
-
-    void SetDefaultData()
-    {
-        defaultData = new PlayerData();
-        defaultData.coins = GameManager.Instance.coins;
-        defaultData.xp = GameManager.Instance.xp;
-        defaultData.xpNeeded = GameManager.Instance.xpNeeded;
-        defaultData.level = GameManager.Instance.level;
-        defaultData.ownedDucks.Add(GameManager.DuckTypes.DefaultDuck);
-    }
 
     public void Startup() //Called when GameManager is setup
     {
@@ -53,7 +32,32 @@ public class Saving : MonoBehaviour
             allDucks.Add(item);
         }
 
+        database = FirebaseDatabase.DefaultInstance;
+        user = FirebaseAuth.DefaultInstance.CurrentUser;
+
         LoadGame();
+    }
+
+    void SetDefaultData()
+    {
+        defaultData = new PlayerData();
+        defaultData.coins = GameManager.Instance.coins;
+        defaultData.xp = GameManager.Instance.xp;
+        defaultData.xpNeeded = GameManager.Instance.xpNeeded;
+        defaultData.level = GameManager.Instance.level;
+        defaultData.ownedDucks.Add(GameManager.DuckTypes.DefaultDuck);
+    }
+
+    void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(this);
+        }
     }
 
     void Update()
@@ -96,8 +100,8 @@ public class Saving : MonoBehaviour
             }
         }
 
-        PlayerPrefs.SetString("SaveData", JsonUtility.ToJson(data));
-        database.RootReference.Child(user.UserId).SetValueAsync(JsonUtility.ToJson(data));
+        //PlayerPrefs.SetString("SaveData", JsonUtility.ToJson(data));
+        database.RootReference.Child("users").Child(user.UserId).SetRawJsonValueAsync(JsonUtility.ToJson(data));
 
         SaveSettings();
         Debug.Log("Saved");
@@ -111,8 +115,22 @@ public class Saving : MonoBehaviour
 
     public void LoadGame()
     {
-        string defaultDataJson = JsonUtility.ToJson(defaultData);
-        PlayerData data = JsonUtility.FromJson<PlayerData>(PlayerPrefs.GetString("SaveData", defaultDataJson));
+        PlayerData data = new();
+        //Set data from firebase
+        database.RootReference.Child("users").Child(user.UserId).GetValueAsync().ContinueWithOnMainThread(task =>
+        {
+            if (task.Exception != null)
+            {
+                Debug.LogError(task.Exception);
+            }
+
+            DataSnapshot snap = task.Result;
+
+            data = JsonUtility.FromJson<PlayerData>(snap.GetRawJsonValue());
+        });
+
+        //string defaultDataJson = JsonUtility.ToJson(defaultData);
+        //PlayerData data = JsonUtility.FromJson<PlayerData>(PlayerPrefs.GetString("SaveData", defaultDataJson));
 
         if (data == null)
         {
@@ -127,7 +145,6 @@ public class Saving : MonoBehaviour
             GameObject duckToSpawn = GetDuckByDuckType(data.ownedDucks[i]).gameObject;
             Instantiate(duckToSpawn, GameManager.Instance.GenerateRandomPosition(), Quaternion.Euler(0.0f, 0.0f, Random.Range(0.0f, 360.0f)));
         }
-
 
         foreach (var duckType in data.avalibleDucks)
         {
@@ -148,6 +165,8 @@ public class Saving : MonoBehaviour
 
     public void RemoveAllData()
     {
+        SetDefaultData();
+        database.RootReference.Child("users").Child(user.UserId).SetRawJsonValueAsync(JsonUtility.ToJson(defaultData));
         PlayerPrefs.DeleteAll();
         Debug.LogWarning("Save Deleted");
         ReloadScene();

@@ -80,6 +80,7 @@ public class LogInToFirebase : MonoBehaviour
                 FirebaseUser newUser = task.Result.User;
                 Debug.LogFormat("User Registerd: {0} ({1})",
                   newUser.DisplayName, newUser.UserId);
+                SignIn(email, password);
             }
         });
     }
