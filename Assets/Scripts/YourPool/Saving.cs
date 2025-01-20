@@ -9,7 +9,6 @@ using UnityEngine.SceneManagement;
 using Random = UnityEngine.Random;
 public class Saving : MonoBehaviour
 {
-    int amountOfThisDuck;
     [SerializeField, Tooltip("Which ducks to save in addition to the ones in the GameManager array")] Duck[] additionalDucksToCount;
     List<Duck> allDucks = new();
     [HideInInspector] public int timeBetweenAutosaves = 30;
