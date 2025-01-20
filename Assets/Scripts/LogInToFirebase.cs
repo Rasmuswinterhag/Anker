@@ -5,20 +5,21 @@ using Firebase.Extensions;
 using Firebase.Auth;
 using TMPro;
 using UnityEngine.SceneManagement;
+using Unity.VisualScripting;
 
 public class LogInToFirebase : MonoBehaviour
 {
     FirebaseAuth auth;
     string emailInput;
     string passwordInput;
-    string displayName;
+    string displayNameInput;
     [SerializeField] TMP_Text userInfo;
-    [SerializeField] TMP_InputField displayNameInputField;
+    [SerializeField] GameObject displayNameThings;
+    FirebaseUser user;
 
     void Start()
     {
         auth = FirebaseAuth.DefaultInstance;
-        FirebaseApp.LogLevel = LogLevel.Debug;
     }
 
     public void UpdateEmail(string input)
@@ -33,7 +34,7 @@ public class LogInToFirebase : MonoBehaviour
 
     public void UpdateDisplayName(string input)
     {
-        displayName = input;
+        displayNameInput = input;
     }
 
     public void Register()
@@ -77,19 +78,59 @@ public class LogInToFirebase : MonoBehaviour
             }
             else
             {
-                FirebaseUser newUser = task.Result.User;
-                Debug.LogFormat("User Registerd: {0} ({1})",
-                  newUser.DisplayName, newUser.UserId);
-                SignIn(email, password);
+                user = task.Result.User;
+                userInfo.text = "Registration succsessfull";
+                Debug.LogFormat("User Registerd: {0}", user.UserId);
+                SignInOrSetName();
             }
         });
     }
 
+    void SignInOrSetName()
+    {
+        if (user.DisplayName == null || user.DisplayName == "")
+        {
+            displayNameThings.SetActive(true);
+            userInfo.text = "Choose Displayname";
+        }
+        else
+        {
+            SignIn(emailInput, passwordInput);
+        }
+    }
 
-    public void LogIn()
+    public void SetDisplayname()
+    {
+        if (user != null)
+        {
+            UserProfile profile = new UserProfile
+            {
+                DisplayName = displayNameInput
+            };
+            user.UpdateUserProfileAsync(profile).ContinueWith(task =>
+            {
+                if (task.IsCanceled)
+                {
+                    Debug.LogError("UpdateUserProfileAsync was canceled.");
+                    return;
+                }
+                if (task.IsFaulted)
+                {
+                    Debug.LogError("UpdateUserProfileAsync encountered an error: " + task.Exception);
+                    return;
+                }
+
+                Debug.Log("User profile updated successfully.");
+                SignInOrSetName();
+            });
+        }
+    }
+
+    public void LogInButton()
     {
         RegisterNewUser(emailInput, passwordInput);
     }
+
 
     private void SignIn(string email, string password)
     {
@@ -116,7 +157,7 @@ public class LogInToFirebase : MonoBehaviour
                         message = "User Disabled";
                         break;
                     case AuthError.Failure:
-                        message = "Failure";
+                        message = "Failure (Wrong Password)";
                         break;
                     default:
                         Debug.LogWarning(task.Exception);
@@ -135,9 +176,10 @@ public class LogInToFirebase : MonoBehaviour
         });
     }
 
-    private void SignOut()
+    public void SignOut()
     {
         auth.SignOut();
+        SceneManager.LoadScene(0);
         Debug.Log("User signed out");
     }
 }

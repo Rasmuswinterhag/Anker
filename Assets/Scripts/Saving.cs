@@ -18,6 +18,7 @@ public class Saving : MonoBehaviour
     PlayerData defaultData;
     FirebaseDatabase database;
     FirebaseUser user;
+    [SerializeField] GameObject saveIcon;
 
 
     public void Startup() //Called when GameManager is setup
@@ -60,18 +61,19 @@ public class Saving : MonoBehaviour
         }
     }
 
-    //void Update()
-    //{
-    //    autosaveTimer += Time.deltaTime;
-    //    if (autosaveTimer >= timeBetweenAutosaves)
-    //    {
-    //        autosaveTimer = 0;
-    //        SaveGame();
-    //    }
-    //}
+    void Update()
+    {
+        autosaveTimer += Time.deltaTime;
+        if (autosaveTimer >= timeBetweenAutosaves)
+        {
+            autosaveTimer = 0;
+            SaveGame();
+        }
+    }
 
     public void SaveGame()
     {
+        saveIcon.SetActive(true);
         PlayerData data = new PlayerData();
         data.coins = GameManager.Instance.coins;
         data.xp = GameManager.Instance.xp;
@@ -109,6 +111,7 @@ public class Saving : MonoBehaviour
 
         SaveSettings();
         Debug.Log("Saved");
+        saveIcon.SetActive(false);
     }
 
     public void SaveSettings()
@@ -167,7 +170,7 @@ public class Saving : MonoBehaviour
 
     void LoadSettings()
     {
-        timeBetweenAutosaves = PlayerPrefs.GetInt("autosaveTime", 30);
+        timeBetweenAutosaves = PlayerPrefs.GetInt("autosaveTime", 60);
         Settings.instance.allowZoom = IntToBool(PlayerPrefs.GetInt("zoomAllowed", 1));
 
         Settings.instance.UpdateUIToNewValues();
