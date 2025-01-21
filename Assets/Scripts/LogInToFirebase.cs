@@ -88,15 +88,20 @@ public class LogInToFirebase : MonoBehaviour
 
     void SignInOrSetName()
     {
-        if (user.DisplayName == null || user.DisplayName == "")
+        if (string.IsNullOrWhiteSpace(user.DisplayName))
         {
-            displayNameThings.SetActive(true);
-            userInfo.text = "Choose Displayname";
+            showDisplayNameThings();
         }
         else
         {
             SignIn(emailInput, passwordInput);
         }
+    }
+
+    void showDisplayNameThings()
+    {
+        displayNameThings.SetActive(true);
+        userInfo.text = "Choose Displayname";
     }
 
     public void SetDisplayname()

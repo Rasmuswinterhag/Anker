@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using TMPro;
 using Unity.Mathematics;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.UI;
+using Tools;
+
 using Random = UnityEngine.Random;
 
 public class GameManager : MonoBehaviour
@@ -45,11 +46,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] TMP_Text coinText;
 
     [Header("Spawn Positions")]
-    [SerializeField] float xMaxCorner;
-    [SerializeField] float xMinCorner;
-
-    [SerializeField] float yMaxCorner;
-    [SerializeField] float yMinCorner;
+    public Vector2 minPos;
+    public Vector2 maxPos;
 
     [Header("Box Spawn Time")]
     [SerializeField] int BoxSpawnMax = 30;
@@ -62,7 +60,7 @@ public class GameManager : MonoBehaviour
     public List<Duck> duckArray;
     public List<Duck> avalibleDucksList = new();
     public Duck extraDuck;
-    
+
 
     void Awake()
     {
@@ -87,7 +85,7 @@ public class GameManager : MonoBehaviour
 
         UpdateCoinText();
 
-        Instantiate(xpDuck, GenerateRandomPosition(), quaternion.identity);
+        Instantiate(xpDuck, MyRandom.RandomPosition(minPos, maxPos), quaternion.identity);
     }
 
     public void AddXp(float amount)
@@ -173,12 +171,7 @@ public class GameManager : MonoBehaviour
     {
         if (FindObjectOfType<CoinPackage>() == null)
         {
-            Instantiate(coinPackage, GenerateRandomPosition(), Quaternion.identity);
+            Instantiate(coinPackage, MyRandom.RandomPosition(minPos, maxPos), Quaternion.identity);
         }
-    }
-
-    public Vector2 GenerateRandomPosition()
-    {
-        return new Vector2(Random.Range(xMinCorner, xMaxCorner), Random.Range(yMinCorner, yMaxCorner));
     }
 }

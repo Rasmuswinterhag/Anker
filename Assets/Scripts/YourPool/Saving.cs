@@ -6,6 +6,7 @@ using Firebase.Database;
 using Firebase.Extensions;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Tools;
 using Random = UnityEngine.Random;
 public class Saving : MonoBehaviour
 {
@@ -41,6 +42,7 @@ public class Saving : MonoBehaviour
     void SetDefaultData()
     {
         defaultData = new PlayerData();
+        defaultData.displayName = "No Name";
         defaultData.coins = GameManager.Instance.coins;
         defaultData.xp = GameManager.Instance.xp;
         defaultData.xpNeeded = GameManager.Instance.xpNeeded;
@@ -74,6 +76,7 @@ public class Saving : MonoBehaviour
     {
         saveIcon.SetActive(true);
         PlayerData data = new PlayerData();
+        data.displayName = user.DisplayName;
         data.coins = GameManager.Instance.coins;
         data.xp = GameManager.Instance.xp;
         data.xpNeeded = GameManager.Instance.xpNeeded;
@@ -116,7 +119,7 @@ public class Saving : MonoBehaviour
     public void SaveSettings()
     {
         PlayerPrefs.SetInt("autosaveTime", timeBetweenAutosaves);
-        PlayerPrefs.SetInt("zoomAllowed", BoolToInt(Settings.instance.allowZoom));
+        PlayerPrefs.SetInt("zoomAllowed", TranslateValues.BoolToInt(Settings.instance.allowZoom));
     }
 
     public void ReloadSceneThenLoadGame()
@@ -153,13 +156,13 @@ public class Saving : MonoBehaviour
 
             for (int i = 0; i < data.ownedDucks.Count; i++)
             {
-                GameObject duckToSpawn = GetDuckByDuckType(data.ownedDucks[i]).gameObject;
-                Instantiate(duckToSpawn, GameManager.Instance.GenerateRandomPosition(), Quaternion.Euler(0.0f, 0.0f, Random.Range(0.0f, 360.0f)));
+                GameObject duckToSpawn = Duckstuff.GetDuckByDuckType(data.ownedDucks[i], allDucks.ToArray()).gameObject;
+                Instantiate(duckToSpawn, MyRandom.RandomPosition(GameManager.Instance.minPos, GameManager.Instance.maxPos), Quaternion.Euler(0.0f, 0.0f, Random.Range(0.0f, 360.0f)));
             }
 
             foreach (var duckType in data.avalibleDucks)
             {
-                GameManager.Instance.avalibleDucksList.Add(GetDuckByDuckType(duckType));
+                GameManager.Instance.avalibleDucksList.Add(Duckstuff.GetDuckByDuckType(duckType, allDucks));
             }
 
             LoadSettings();
@@ -170,7 +173,7 @@ public class Saving : MonoBehaviour
     void LoadSettings()
     {
         timeBetweenAutosaves = PlayerPrefs.GetInt("autosaveTime", 60);
-        Settings.instance.allowZoom = IntToBool(PlayerPrefs.GetInt("zoomAllowed", 1));
+        Settings.instance.allowZoom = TranslateValues.IntToBool(PlayerPrefs.GetInt("zoomAllowed", 1));
 
         Settings.instance.UpdateUIToNewValues();
     }
@@ -187,7 +190,7 @@ public class Saving : MonoBehaviour
     void ResetSettings()
     {
         PlayerPrefs.SetInt("autosaveTime", 30);
-        PlayerPrefs.SetInt("zoomAllowed", BoolToInt(true));
+        PlayerPrefs.SetInt("zoomAllowed", TranslateValues.BoolToInt(true));
     }
 
     public void ReloadScene()
@@ -204,49 +207,6 @@ public class Saving : MonoBehaviour
     {
         SaveGame();
     }
-
-    bool IntToBool(int input)
-    {
-        if (input == 1)
-        {
-            return true;
-        }
-        else if (input == 0)
-        {
-            return false;
-        }
-
-        Debug.LogWarning("input was " + input + " expected 1 or 0, returning false");
-        return false;
-    }
-
-    int BoolToInt(bool input)
-    {
-        if (input)
-        {
-            return 1;
-        }
-        else if (!input)
-        {
-            return 0;
-        }
-
-        Debug.LogWarning("input was " + input + " expected true or false, returning 0");
-        return 0;
-    }
-
-    public Duck GetDuckByDuckType(GameManager.DuckTypes DuckType)
-    {
-        //return allDucks.Find(duck => duck.duckType == DuckType);
-        foreach (var duck in allDucks)
-        {
-            if (duck.duckType == DuckType)
-            {
-                return duck;
-            }
-        }
-        return null;
-    }
 }
 
 public class PlayerData
@@ -255,6 +215,7 @@ public class PlayerData
     public float xp;
     public int xpNeeded;
     public int level;
+    public string displayName;
     public List<GameManager.DuckTypes> ownedDucks = new();
     public List<GameManager.DuckTypes> avalibleDucks = new();
 }

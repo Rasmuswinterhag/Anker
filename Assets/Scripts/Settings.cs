@@ -1,6 +1,8 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Firebase.Auth;
+using UnityEngine.SceneManagement;
 
 public class Settings : MonoBehaviour
 {
@@ -9,6 +11,8 @@ public class Settings : MonoBehaviour
     [SerializeField] GameObject removeSaveConfirmation;
     [SerializeField] Slider autosaveSlider;
     [SerializeField] TMP_Text autosaveTimerText;
+    [SerializeField] TMP_Text UID;
+    FirebaseUser user;
 
     [Header("Private variables")]
     [HideInInspector] public bool allowZoom;
@@ -24,6 +28,8 @@ public class Settings : MonoBehaviour
         {
             Destroy(this);
         }
+        user = FirebaseAuth.DefaultInstance.CurrentUser;
+        UID.text = user.UserId;
     }
 
     public void UpdateAutosaveSlider()
@@ -48,5 +54,16 @@ public class Settings : MonoBehaviour
     public void DeleteSaveConfirmation(bool value)
     {
         removeSaveConfirmation.SetActive(value);
+    }
+
+    public void CopyUID()
+    {
+        GUIUtility.systemCopyBuffer = user.UserId;
+    }
+
+    public void GoToPoolParty()
+    {
+        Saving.instance.SaveGame();
+        SceneManager.LoadScene(2);
     }
 }

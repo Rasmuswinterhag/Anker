@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Tools;
 
 public class XpDuck : MonoBehaviour
 {
@@ -26,7 +27,7 @@ public class XpDuck : MonoBehaviour
 
     void ResetDuck()
     {
-        transform.position = GameManager.Instance.GenerateRandomPosition();
+        transform.position = MyRandom.RandomPosition(GameManager.Instance.minPos, GameManager.Instance.maxPos);
         GetComponent<Rigidbody2D>().angularVelocity = 0;
         GetComponent<Rigidbody2D>().velocity = Vector2.zero;
     }

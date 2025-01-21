@@ -4,24 +4,28 @@ using UnityEngine;
 using Firebase.Auth;
 using Firebase.Database;
 using Firebase.Extensions;
+using Tools;
+using TMPro;
 using UnityEngine.SceneManagement;
 
 public class OtherPoolManager : MonoBehaviour
 {
     FirebaseDatabase database;
-    [SerializeField] Duck[] allDucks;
     string idInput;
 
     [Header("Spawn Positions")]
-    [SerializeField] float xMaxCorner;
-    [SerializeField] float xMinCorner;
+    [SerializeField] Vector2 minPos;
+    [SerializeField] Vector2 maxPos;
 
-    [SerializeField] float yMaxCorner;
-    [SerializeField] float yMinCorner;
-    FirebaseUser visitedUser;
+    [Header("References")]
+    [SerializeField] Duck[] allDucks;
+    [SerializeField] TMP_Text poolUsersName;
+    [SerializeField] GameObject joinMenu;
 
     void Start()
     {
+        joinMenu.SetActive(true);
+        poolUsersName.gameObject.SetActive(false);
         database = FirebaseDatabase.DefaultInstance;
     }
 
@@ -37,6 +41,11 @@ public class OtherPoolManager : MonoBehaviour
         //TODO: Hide visit screen when sucsessfully visited someone
     }
 
+    public void LoadPool(FirebaseUser user)
+    {
+        LoadPool(user.UserId);
+    }
+
     public void LoadPool(string userId)
     {
         PlayerData data = new();
@@ -44,6 +53,7 @@ public class OtherPoolManager : MonoBehaviour
         //Set data from firebase
         database.RootReference.Child("users").Child(userId).GetValueAsync().ContinueWithOnMainThread(task =>
         {
+
             if (task.Exception != null)
             {
                 Debug.LogError(task.Exception);
@@ -59,32 +69,23 @@ public class OtherPoolManager : MonoBehaviour
                 return;
             }
 
+            poolUsersName.text = data.displayName;
+
             for (int i = 0; i < data.ownedDucks.Count; i++)
             {
-                GameObject duckToSpawn = GetDuckByDuckType(data.ownedDucks[i]).gameObject;
-                GameObject spawnedDuck = Instantiate(duckToSpawn, GenerateRandomPosition(), Quaternion.Euler(0.0f, 0.0f, Random.Range(0.0f, 360.0f)));
+                GameObject duckToSpawn = Duckstuff.GetDuckByDuckType(data.ownedDucks[i], allDucks).gameObject;
+                GameObject spawnedDuck = Instantiate(duckToSpawn, MyRandom.RandomPosition(minPos, maxPos), Quaternion.Euler(0.0f, 0.0f, Random.Range(0.0f, 360.0f)));
                 Destroy(spawnedDuck.GetComponent<PassiveXPGain>());
-
             }
-            Debug.Log("Loaded " + userId);
+            //Debug.Log("Loaded " + data.displayName + "'s pool (" + userId + ")");
+            joinMenu.SetActive(false);
+            poolUsersName.gameObject.SetActive(true);
+            Debug.LogFormat("Loaded {0}'s pool ({1})", data.displayName, userId);
         });
     }
 
-    public Duck GetDuckByDuckType(GameManager.DuckTypes DuckType)
+    public void GoHome()
     {
-        //return allDucks.Find(duck => duck.duckType == DuckType);
-        foreach (var duck in allDucks)
-        {
-            if (duck.duckType == DuckType)
-            {
-                return duck;
-            }
-        }
-        return null;
-    }
-
-    public Vector2 GenerateRandomPosition()
-    {
-        return new Vector2(Random.Range(xMinCorner, xMaxCorner), Random.Range(yMinCorner, yMaxCorner));
+        SceneManager.LoadScene(1);
     }
 }
