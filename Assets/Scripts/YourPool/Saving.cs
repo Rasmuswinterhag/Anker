@@ -43,10 +43,10 @@ public class Saving : MonoBehaviour
     {
         defaultData = new PlayerData();
         defaultData.displayName = "No Name";
-        defaultData.coins = GameManager.Instance.coins;
-        defaultData.xp = GameManager.Instance.xp;
-        defaultData.xpNeeded = GameManager.Instance.xpNeeded;
-        defaultData.level = GameManager.Instance.level;
+        defaultData.coins = 0;
+        defaultData.xp = 0;
+        defaultData.xpNeeded = 1000;
+        defaultData.level = 0;
         defaultData.ownedDucks.Add(GameManager.DuckTypes.DefaultDuck);
     }
 

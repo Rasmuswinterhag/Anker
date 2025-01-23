@@ -32,7 +32,7 @@ public class GameManager : MonoBehaviour
 
     //xp Stuff
     [HideInInspector] public float xp;
-    public int xpNeeded = 1000;
+    public int xpNeeded;
     [HideInInspector] public int level;
 
     [HideInInspector] public int coins;
@@ -86,6 +86,7 @@ public class GameManager : MonoBehaviour
         UpdateCoinText();
 
         Instantiate(xpDuck, MyRandom.RandomPosition(minPos, maxPos), quaternion.identity);
+        xpNeeded = (level + 1) * 1000;
     }
 
     public void AddXp(float amount)
@@ -124,7 +125,7 @@ public class GameManager : MonoBehaviour
     {
         level++;
         xp = 0f;
-        xpNeeded = level * 1000 + 1;
+        xpNeeded = (level + 1) * 1000;
 
         UpdateSlider();
         UpdateSliderMax();
