@@ -6,6 +6,7 @@ using Firebase.Auth;
 using TMPro;
 using UnityEngine.SceneManagement;
 using Unity.VisualScripting;
+using Tools;
 
 public class LogInToFirebase : MonoBehaviour
 {
@@ -20,6 +21,11 @@ public class LogInToFirebase : MonoBehaviour
     void Start()
     {
         auth = FirebaseAuth.DefaultInstance;
+
+        if(auth.CurrentUser != null)
+        {
+            SceneManager.LoadScene(1);
+        }
     }
 
     public void UpdateEmail(string input)
@@ -183,8 +189,6 @@ public class LogInToFirebase : MonoBehaviour
 
     public void SignOut()
     {
-        auth.SignOut();
-        SceneManager.LoadScene(0);
-        Debug.Log("User signed out");
+        FirebaseStuff.SignOut();
     }
 }

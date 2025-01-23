@@ -58,7 +58,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject present;
     [SerializeField] GameObject coinPackage;
     public List<Duck> duckArray;
-    public List<Duck> avalibleDucksList = new();
+    public List<Duck> availableDucksList = new();
     public Duck extraDuck;
 
 
@@ -134,14 +134,14 @@ public class GameManager : MonoBehaviour
 
     public void SpawnDuckFromPresent(Present tappedPresent)
     {
-        int listLegth = avalibleDucksList.Count;
+        int listLegth = availableDucksList.Count;
 
 
         if (listLegth > 0)
         {
             int randomListIndex = Random.Range(0, listLegth);
-            tappedPresent.PlaceDuck(avalibleDucksList[randomListIndex]);
-            avalibleDucksList.RemoveAt(randomListIndex);
+            tappedPresent.PlaceDuck(availableDucksList[randomListIndex]);
+            availableDucksList.RemoveAt(randomListIndex);
         }
         else
         {
