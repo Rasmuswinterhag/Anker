@@ -146,6 +146,7 @@ GameObject:
   - component: {fileID: 701944602699264528}
   - component: {fileID: 1674684799584428307}
   - component: {fileID: 3050296696503551751}
+  - component: {fileID: 895516450600963221}
   m_Layer: 5
   m_Name: AccountButton
   m_TagString: Untagged
@@ -160,7 +161,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4951177190414162456}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -256,7 +257,38 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1674684799584428307}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 895516450600963221}
+        m_TargetAssemblyTypeName: AccountButton, Assembly-CSharp
+        m_MethodName: SetVisitId
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &895516450600963221
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4951177190414162456}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77b02ebacf6ac4b488b2eeab8cf50657, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  displayNameText: {fileID: 4985082704534620448}
+  UidText: {fileID: 794477012624966931}
+  levelText: {fileID: 7543937305652441163}
+  visitInputField: {fileID: 0}
+  displayName: 
+  UID: 
+  level: 0
 --- !u!1 &6054012267110317822
 GameObject:
   m_ObjectHideFlags: 0

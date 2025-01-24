@@ -48,6 +48,7 @@ public class Saving : MonoBehaviour
         defaultData.xpNeeded = 1000;
         defaultData.level = 0;
         defaultData.ownedDucks.Add(GameManager.DuckTypes.DefaultDuck);
+        defaultData.UID = "Default User Id";
     }
 
     void Awake()
@@ -81,6 +82,7 @@ public class Saving : MonoBehaviour
         data.xp = GameManager.Instance.xp;
         data.xpNeeded = GameManager.Instance.xpNeeded;
         data.level = GameManager.Instance.level;
+        data.UID = user.UserId;
 
         List<Duck> duckObjects = FindObjectsOfType<Duck>().ToList();
         List<GameManager.DuckTypes> ownedDucks = new();
@@ -208,6 +210,7 @@ public class Saving : MonoBehaviour
 
 public class PlayerData
 {
+    public string UID;
     public int coins;
     public float xp;
     public int xpNeeded;

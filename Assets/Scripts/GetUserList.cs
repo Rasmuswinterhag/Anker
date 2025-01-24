@@ -4,34 +4,34 @@ using UnityEngine;
 using Firebase.Auth;
 using Firebase.Database;
 using Firebase.Extensions;
+using System.Diagnostics.CodeAnalysis;
+using TMPro;
 
 public class GetUserList : MonoBehaviour
 {
-    [SerializeField] GameObject button;
+    [SerializeField] TMP_InputField visitInputField;
+    [SerializeField] GameObject accountButtonPrefab;
     FirebaseDatabase database;
-
-
 
     void Start()
     {
-        AccountButtonData data;
-        //TODO: Get all users Displaynames, UID's and levels and display them on on each button, one button/user
         database = FirebaseDatabase.DefaultInstance;
         database.RootReference.Child("users").GetValueAsync().ContinueWithOnMainThread(task =>
         {
-            //TODO: understand how to get each child seperatly so you can set each button's values seperatly
-            //TODO: Keep the buttons values (displayname, uid and level) in a component
-            //TODO: Create one button for each user
-            //TODO: When you click the button put the UID in the "visit input field" and update the value in the script so you just have to press visit
-            DataSnapshot snap = task.Result;
-            data = JsonUtility.FromJson<AccountButtonData>(snap.GetRawJsonValue());
+
+            List<PlayerData> pData = new();
+            Debug.Log(task.Result.ChildrenCount);
+            foreach (var item in task.Result.Children)
+            {
+                pData.Add(JsonUtility.FromJson<PlayerData>(item.GetRawJsonValue()));
+            }
+            foreach (var item in pData)
+            {
+                GameObject spawnedButton = Instantiate(accountButtonPrefab, gameObject.transform);
+                AccountButton spawnedAccountData = spawnedButton.GetComponent<AccountButton>();
+                spawnedAccountData.SetData(item);
+                spawnedAccountData.visitInputField = visitInputField;
+            }
         });
     }
-}
-
-public class AccountButtonData
-{
-    public string displayName;
-    public string UID;
-    public int level;
 }
