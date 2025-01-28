@@ -84,6 +84,37 @@ namespace Tools
             Debug.LogWarning("input was " + input + " expected true or false, returning 0");
             return 0;
         }
+
+        /// <summary>
+        /// Multiplies each of a Vector3's values with each of another Vector3's values
+        /// </summary>
+        /// <returns>
+        /// A Vector3 with its values multiplied
+        /// </returns>
+        public static Vector3 MultiplyVector3(Vector3 input, Vector3 multipliedBy)
+        {
+            Vector3 output = new();
+            output.x = input.x * multipliedBy.x;
+            output.y = input.y * multipliedBy.y;
+            output.z = input.z * multipliedBy.z;
+            
+            return output;
+        }
+        
+        /// <summary>
+        /// Multiplies each of a Vector2's values with each of another Vector2's values
+        /// </summary>
+        /// <returns>
+        /// A Vector2 with its values multiplied
+        /// </returns>
+        public static Vector2 MultiplyVector2(Vector2 input, Vector2 multipliedBy)
+        {
+            Vector2 output = new();
+            output.x = input.x * multipliedBy.x;
+            output.y = input.y * multipliedBy.y;
+            
+            return output;
+        }
     }
 
     public class MyRandom
