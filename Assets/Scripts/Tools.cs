@@ -97,10 +97,10 @@ namespace Tools
             output.x = input.x * multipliedBy.x;
             output.y = input.y * multipliedBy.y;
             output.z = input.z * multipliedBy.z;
-            
+
             return output;
         }
-        
+
         /// <summary>
         /// Multiplies each of a Vector2's values with each of another Vector2's values
         /// </summary>
@@ -112,8 +112,24 @@ namespace Tools
             Vector2 output = new();
             output.x = input.x * multipliedBy.x;
             output.y = input.y * multipliedBy.y;
-            
+
             return output;
+        }
+
+        /// <returns>
+        /// The mouse position translated from ScreenToWorldPoint from the main camera
+        /// </returns>
+        public static Vector2 WorldMousePosition()
+        {
+            return WorldMousePosition(Camera.main);
+        }
+
+        /// <returns>
+        /// The mouse position translated from ScreenToWorldPoint according to a specific camera
+        /// </returns>
+        public static Vector2 WorldMousePosition(Camera camera)
+        {
+            return camera.ScreenToWorldPoint(Input.mousePosition);
         }
     }
 

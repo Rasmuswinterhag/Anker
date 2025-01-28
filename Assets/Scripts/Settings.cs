@@ -16,13 +16,13 @@ public class Settings : MonoBehaviour
 
     [Header("Private variables")]
     [HideInInspector] public bool allowZoom;
-    static public Settings instance = null;
+    static public Settings Instance = null;
 
     public void Startup()
     {
-        if (instance == null)
+        if (Instance == null)
         {
-            instance = this;
+            Instance = this;
         }
         else
         {
@@ -34,13 +34,15 @@ public class Settings : MonoBehaviour
 
     public void UpdateAutosaveSlider()
     {
-        Saving.instance.timeBetweenAutosaves = (int)autosaveSlider.value;
+        Saving.Instance.timeBetweenAutosaves = (int)autosaveSlider.value;
         autosaveTimerText.text = autosaveSlider.value + "s";
+        Saving.Instance.SaveSettings();
     }
 
     public void UpdateAllowZoom()
     {
         allowZoom = zoomToggle.isOn;
+        Saving.Instance.SaveSettings();
     }
 
     public void UpdateUIToNewValues()
@@ -63,7 +65,7 @@ public class Settings : MonoBehaviour
 
     public void GoToPoolParty()
     {
-        Saving.instance.SaveGame();
+        Saving.Instance.SaveGame();
         SceneManager.LoadScene(2);
     }
 }

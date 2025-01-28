@@ -40,6 +40,8 @@ public class GameManager : MonoBehaviour
     //other stuff
     Vector3 midPoint = new Vector3(10.5f, 5f, 0f);
     public static GameManager Instance;
+    [SerializeField] float boxSpawnTimer = 30;
+    float boxTimer;
 
     [Header("References")]
     [SerializeField] Slider slider;
@@ -49,9 +51,6 @@ public class GameManager : MonoBehaviour
     public Vector2 minPos;
     public Vector2 maxPos;
 
-    [Header("Box Spawn Time")]
-    [SerializeField] int BoxSpawnMax = 30;
-    [SerializeField] int BoxSpawnMin = 1;
 
     [Header("Prefabs")]
     [SerializeField] GameObject xpDuck;
@@ -81,12 +80,20 @@ public class GameManager : MonoBehaviour
         UpdateSlider();
         UpdateSliderMax();
 
-        InvokeRepeating(nameof(SpawnPackage), Random.Range(BoxSpawnMin, BoxSpawnMax), Random.Range(BoxSpawnMin, BoxSpawnMax));
-
         UpdateCoinText();
 
         Instantiate(xpDuck, MyRandom.RandomPosition(minPos, maxPos), quaternion.identity);
         xpNeeded = (level + 1) * 1000;
+    }
+
+    void Update()
+    {
+        boxTimer += Time.deltaTime;
+        if (boxTimer >= boxSpawnTimer)
+        {
+            Instantiate(coinPackage, MyRandom.RandomPosition(minPos, maxPos), quaternion.identity);
+            boxTimer = 0;
+        }
     }
 
     public void AddXp(float amount)

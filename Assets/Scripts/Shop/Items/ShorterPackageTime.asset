@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6611e4615f0883641a47e1d82c113dac, type: 3}
+  m_Name: ShorterPackageTime
+  m_EditorClassIdentifier: 
+  itemName: Faster Packages
+  image: {fileID: 21300000, guid: f7e2c483563319947a694a4cb9663578, type: 3}
+  description: 'This will bribe the delivery people to deliver packages into your
+    pool one second faster!
+
+
+    They dont get paid enough to be fast by the delivery
+    company. So we have to do it for them....'
+  cost: 250
+  costMultiplier: 1.1
+  maxAmount: 20

@@ -19,6 +19,8 @@ public class LoadShopItems : MonoBehaviour
     public void OnClick()
     {
         Shop.Instance.ShopkeeperSay(shopItem.description);
+        Shop.Instance.SetCost(shopItem.cost);
+        //TODO: Keep track how many of the items youve bought, and adjust cost according to that and shopItem.costMultiplier
         //TODO: Make the item selected
     }
 }

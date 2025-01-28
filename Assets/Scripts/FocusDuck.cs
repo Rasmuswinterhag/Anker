@@ -23,7 +23,20 @@ public class FocusDuck : MonoBehaviour
     GameObject focusObject;
     Camera mCam;
     Settings settings;
- 
+    public static FocusDuck Instance { get; private set; }
+
+    void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else if (Instance != this)
+        {
+            Destroy(this);
+        }
+    }
+
     void Start()
     {
         //find references

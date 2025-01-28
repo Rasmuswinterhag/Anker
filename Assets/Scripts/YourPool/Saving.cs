@@ -14,7 +14,7 @@ public class Saving : MonoBehaviour
     List<Duck> allDucks = new();
     [HideInInspector] public int timeBetweenAutosaves = 30;
     float autosaveTimer;
-    static public Saving instance;
+    static public Saving Instance;
     PlayerData defaultData;
     FirebaseDatabase database;
     FirebaseUser user;
@@ -53,9 +53,9 @@ public class Saving : MonoBehaviour
 
     void Awake()
     {
-        if (instance == null)
+        if (Instance == null)
         {
-            instance = this;
+            Instance = this;
         }
         else
         {
@@ -121,7 +121,8 @@ public class Saving : MonoBehaviour
     public void SaveSettings()
     {
         PlayerPrefs.SetInt("autosaveTime", timeBetweenAutosaves);
-        PlayerPrefs.SetInt("zoomAllowed", TranslateValues.BoolToInt(Settings.instance.allowZoom));
+        PlayerPrefs.SetInt("zoomAllowed", TranslateValues.BoolToInt(Settings.Instance.allowZoom));
+        Debug.Log("Saved settings");
     }
 
     public void ReloadSceneThenLoadGame()
@@ -172,9 +173,9 @@ public class Saving : MonoBehaviour
     void LoadSettings()
     {
         timeBetweenAutosaves = PlayerPrefs.GetInt("autosaveTime", 60);
-        Settings.instance.allowZoom = TranslateValues.IntToBool(PlayerPrefs.GetInt("zoomAllowed", 1));
+        Settings.Instance.allowZoom = TranslateValues.IntToBool(PlayerPrefs.GetInt("zoomAllowed", 1));
 
-        Settings.instance.UpdateUIToNewValues();
+        Settings.Instance.UpdateUIToNewValues();
     }
 
     public void RemoveAllData()
