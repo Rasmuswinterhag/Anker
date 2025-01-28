@@ -10,11 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6611e4615f0883641a47e1d82c113dac, type: 3}
-  m_Name: AnotherXpDuck
+  m_Name: PassiveXp
   m_EditorClassIdentifier: 
-  itemName: Xp Duck
-  image: {fileID: 21300000, guid: 634f46b3ff9e71842aa9b66eec7a8ed8, type: 3}
-  description: This will give you another xp duck to pop for even more xp!
-  cost: 100
-  costMultiplier: 1.5
-  maxAmount: 4
+  itemName: Passive Xp
+  image: {fileID: 21300000, guid: 3488d28d01c47f047ac5aa0eba10fa8e, type: 3}
+  description: This will get your ducks to relax even harder in your pool so they
+    gain you even more xp passively!
+  cost: 500
+  costMultiplier: 2
+  maxAmount: 10

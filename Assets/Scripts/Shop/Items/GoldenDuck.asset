@@ -10,11 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6611e4615f0883641a47e1d82c113dac, type: 3}
-  m_Name: AnotherXpDuck
+  m_Name: GoldenDuck
   m_EditorClassIdentifier: 
-  itemName: Xp Duck
-  image: {fileID: 21300000, guid: 634f46b3ff9e71842aa9b66eec7a8ed8, type: 3}
-  description: This will give you another xp duck to pop for even more xp!
-  cost: 100
-  costMultiplier: 1.5
-  maxAmount: 4
+  itemName: Golden Duck
+  image: {fileID: 21300000, guid: d4a7726338201cf499f92d9ce46f07b6, type: 3}
+  description: "This duck Is a collectible, not many were made back in the day. \n\nNow
+    theyre worth a fortune!"
+  cost: 1000
+  costMultiplier: 1
+  maxAmount: 1

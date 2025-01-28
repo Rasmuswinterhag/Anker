@@ -4,6 +4,7 @@ using UnityEngine;
 public class Shop : MonoBehaviour
 {
     [SerializeField, TextArea(3, 5)] string[] greetings;
+    [SerializeField] AudioClip[] quacks;
     [SerializeField] TMP_Text shopKeeperField;
 
     public static Shop Instance { get; private set; }
@@ -28,16 +29,6 @@ public class Shop : MonoBehaviour
     public void ShopkeeperSay(string whatToSay)
     {
         shopKeeperField.text = whatToSay;
+        AudioSource.PlayClipAtPoint(quacks[Random.Range(0, quacks.Length)], Camera.main.transform.position);
     }
-}
-
-[CreateAssetMenu(fileName = "New Shop Item", menuName = "Shop/Item", order = -1)]
-public class ShopItem : ScriptableObject
-{
-    public string itemName;
-    public Sprite image;
-    [TextArea(3, 5)] public string description;
-    public int cost;
-    public float costMultiplier;
-    public int maxAmount = 1;
 }

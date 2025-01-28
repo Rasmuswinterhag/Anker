@@ -316,6 +316,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b2772ee7d96420489916e08eacb318b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shopItem: {fileID: 11400000, guid: c772f1a2c4516ef4bab4278e7d61f639, type: 2}
+  shopItem: {fileID: 0}
   image: {fileID: 5322653000893061806}
   nameField: {fileID: 4000269217406241423}
