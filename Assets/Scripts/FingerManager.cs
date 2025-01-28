@@ -9,6 +9,8 @@ public class FingerManager : MonoBehaviour
     List<GameObject> fingers = new();
     [SerializeField] int minFingers = 5;
 
+    int combinedTouchAndMouseCount;
+
     void Start()
     {
         for (int i = 0; i < minFingers; i++)
@@ -23,6 +25,7 @@ public class FingerManager : MonoBehaviour
         spawnedFinger.SetActive(false);
         fingers.Add(spawnedFinger);
     }
+
 
     void Update()
     {
@@ -40,16 +43,18 @@ public class FingerManager : MonoBehaviour
         {
             for (int i = 0; i < Input.touchCount; i++)
             {
-                GameObject finger = fingers[i];
                 Vector3 worldTouchPosition = Camera.main.ScreenToWorldPoint(Input.GetTouch(i).position);
+
                 worldTouchPosition.z = 0;
-                // if (!finger.activeSelf)
-                // {
-                //     finger.SetActive(true);
-                // }
                 fingers[i].transform.position = worldTouchPosition;
             }
         }
-
+        else if (Input.GetMouseButton(0))
+        {
+            Vector3 worldTouchPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            worldTouchPosition.z = 0;
+            fingers[0].SetActive(true);
+            fingers[0].transform.position = worldTouchPosition;
+        }
     }
 }
