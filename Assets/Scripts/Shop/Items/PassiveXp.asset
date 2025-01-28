@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6611e4615f0883641a47e1d82c113dac, type: 3}
   m_Name: PassiveXp
   m_EditorClassIdentifier: 
-  itemName: Passive Xp
+  itemName: Passive XP
   image: {fileID: 21300000, guid: 3488d28d01c47f047ac5aa0eba10fa8e, type: 3}
   description: This will get your ducks to relax even harder in your pool so they
-    gain you even more xp passively!
+    gain you even more XP passively!
   cost: 500
   costMultiplier: 2
   maxAmount: 10

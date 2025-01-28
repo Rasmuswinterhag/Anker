@@ -22,6 +22,7 @@ public class LoadShopItems : MonoBehaviour
         Shop.Instance.SetCost(shopItem.cost);
         //TODO: Make the item selected
         //TODO: Be able to buy items
+        //TODO: Have limit to bought items, negative uses is infinite
         //TODO: Save the upgrades bought
         //TODO: Keep track how many of the items youve bought, and adjust cost according to that and shopItem.costMultiplier
     }

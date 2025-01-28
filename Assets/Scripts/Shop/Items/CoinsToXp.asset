@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6611e4615f0883641a47e1d82c113dac, type: 3}
-  m_Name: MoreXpFromXpDuck
+  m_Name: CoinsToXp
   m_EditorClassIdentifier: 
-  itemName: XP duck steroids
-  image: {fileID: 21300000, guid: ad467845dd0a41e49ac9dbec23f50544, type: 3}
-  description: 'Want your XP duck(s) to be better, some of this will <i>surely</i>
-    do the trick!
+  itemName: Coins To XP
+  image: {fileID: -3794147439184207365, guid: d41f405a8b527434581b678575b51249, type: 3}
+  description: 'I''ll give you some of my XP for some of your coins.
 
 
-    Get more Xp for popping them!'
-  cost: 500
+    I think
+    its a good deal!'
+  cost: 10
   costMultiplier: 1
-  maxAmount: 9
+  maxAmount: -1
