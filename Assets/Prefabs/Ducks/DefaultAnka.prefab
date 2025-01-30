@@ -163,7 +163,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0722618e417aedc4baa43dfd3ec2c423, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  duckType: 
+  duckType: 0
+  maxDistanceToZoom: 0.75
 --- !u!114 &7239557983643376901
 MonoBehaviour:
   m_ObjectHideFlags: 0

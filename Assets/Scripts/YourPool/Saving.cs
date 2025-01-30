@@ -49,6 +49,10 @@ public class Saving : MonoBehaviour
         defaultData.level = 0;
         defaultData.ownedDucks.Add(GameManager.DuckTypes.DefaultDuck);
         defaultData.UID = "Default User Id";
+        foreach (var item in GameManager.Instance.duckArray)
+        {
+            defaultData.availableDucks.Add(item.duckType);
+        }
     }
 
     void Awake()
@@ -86,31 +90,21 @@ public class Saving : MonoBehaviour
 
         List<Duck> duckObjects = FindObjectsOfType<Duck>().ToList();
         List<GameManager.DuckTypes> ownedDucks = new();
-        for (int i = 0; i < duckObjects.Count; i++)
+        foreach (Duck duckObject in duckObjects)
         {
-            Duck duckObject = duckObjects[i];
             ownedDucks.Add(duckObject.duckType);
         }
 
-        for (int i = 0; i < ownedDucks.Count; i++) //adds all the owned ducks to save data
+        foreach (GameManager.DuckTypes duckType in ownedDucks) //adds all the owned ducks to save data
         {
-            data.ownedDucks.Add(ownedDucks[i]);
+            data.ownedDucks.Add(duckType);
         }
 
-        foreach (var duckGameObject in allDucks) //adds all the unowned ducks to save data
+        foreach (var avilableDuck in GameManager.Instance.availableDucksList) //adds all the unowned ducks to save data
         {
-            Duck duck = duckGameObject.GetComponent<Duck>();
-            if (!ownedDucks.Contains(duck.duckType) && duck.duckType != GameManager.Instance.extraDuck.duckType)
-            {
-                data.availableDucks.Add(duck.duckType);
-            }
+            data.availableDucks.Add(avilableDuck.duckType);
         }
 
-        //PlayerPrefs.SetString("SaveData", JsonUtility.ToJson(data));
-        foreach (var item in data.ownedDucks)
-        {
-            Debug.Log("Owned ducks: " + item);
-        }
         database.RootReference.Child("users").Child(user.UserId).SetRawJsonValueAsync(JsonUtility.ToJson(data));
 
         SaveSettings();
@@ -160,9 +154,19 @@ public class Saving : MonoBehaviour
                 Instantiate(duckToSpawn, MyRandom.RandomPosition(GameManager.Instance.minPos, GameManager.Instance.maxPos), Quaternion.Euler(0.0f, 0.0f, Random.Range(0.0f, 360.0f)));
             }
 
-            foreach (var duckType in data.availableDucks)
+            if (data.availableDucks.Count > 0)
             {
-                GameManager.Instance.availableDucksList.Add(Duckstuff.GetDuckByDuckType(duckType, allDucks));
+                foreach (var duckType in data.availableDucks)
+                {
+                    GameManager.Instance.availableDucksList.Add(Duckstuff.GetDuckByDuckType(duckType, allDucks));
+                }
+            }
+            else
+            {
+                foreach (var defaultDataDuckType in defaultData.availableDucks)
+                {
+                    GameManager.Instance.availableDucksList.Add(Duckstuff.GetDuckByDuckType(defaultDataDuckType, allDucks));
+                }
             }
 
             LoadSettings();
@@ -208,6 +212,7 @@ public class Saving : MonoBehaviour
         SaveGame();
     }
 }
+
 
 public class PlayerData
 {

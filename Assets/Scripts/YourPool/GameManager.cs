@@ -32,9 +32,8 @@ public class GameManager : MonoBehaviour
 
     //xp Stuff
     [HideInInspector] public float xp;
-    public int xpNeeded;
+    [HideInInspector] public int xpNeeded;
     [HideInInspector] public int level;
-
     [HideInInspector] public int coins;
 
     //other stuff
@@ -58,7 +57,6 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject coinPackage;
     public List<Duck> duckArray;
     public List<Duck> availableDucksList = new();
-    public Duck extraDuck;
 
 
     void Awake()
@@ -93,6 +91,11 @@ public class GameManager : MonoBehaviour
         {
             Instantiate(coinPackage, MyRandom.RandomPosition(minPos, maxPos), quaternion.identity);
             boxTimer = 0;
+        }
+
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            AddXp(xpNeeded - xp);
         }
     }
 
@@ -138,24 +141,6 @@ public class GameManager : MonoBehaviour
         UpdateSliderMax();
 
         Instantiate(present, midPoint, Quaternion.identity);
-    }
-
-    public void SpawnDuckFromPresent(Present tappedPresent)
-    {
-        int listLegth = availableDucksList.Count;
-
-
-        if (listLegth > 0)
-        {
-            int randomListIndex = Random.Range(0, listLegth);
-            tappedPresent.PlaceDuck(availableDucksList[randomListIndex]);
-            availableDucksList.RemoveAt(randomListIndex);
-        }
-        else
-        {
-            tappedPresent.PlaceDuck(extraDuck);
-        }
-
     }
 
     public void AddCoins(int amount)
