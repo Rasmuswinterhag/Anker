@@ -52,8 +52,14 @@ MonoBehaviour:
   boxSpawnTimer: 30
   slider: {fileID: 0}
   coinText: {fileID: 0}
-  minPos: {x: 1, y: 1.5}
-  maxPos: {x: 19, y: 8}
+  tilemap: {fileID: 0}
+  borderTile: {fileID: 11400000, guid: 796bbfd727a67c94c9426b47c51e02a9, type: 2}
+  paddingLeft: 1
+  paddingRight: 1
+  paddingTop: 1
+  paddingBottom: 1
+  minPos: {x: 0.5, y: 1}
+  maxPos: {x: 20.5, y: 9}
   xpDuck: {fileID: 5260089664678815758, guid: 8d42d4d99b8408f43ae3396917648fc2, type: 3}
   present: {fileID: 8520848832866700874, guid: 17e64932cfdc533478bb937a15fbdcc3, type: 3}
   coinPackage: {fileID: 4133283430949652805, guid: 7ff2d430ee0ee91439c1d0a929e77a05, type: 3}

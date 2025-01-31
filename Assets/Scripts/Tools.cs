@@ -131,6 +131,36 @@ namespace Tools
         {
             return camera.ScreenToWorldPoint(Input.mousePosition);
         }
+
+        /// <returns>
+        /// The bottom left point of the camera plus padding
+        /// </returns>
+        public static Vector2 CalculateMinCameraBounds(float paddingLeft, float paddingBottom)
+        {
+            Camera cam = Camera.main;
+
+            Vector3 bottomLeft = cam.ScreenToWorldPoint(new Vector3(0, 0, cam.nearClipPlane));
+
+            bottomLeft.x += paddingLeft;
+            bottomLeft.y += paddingBottom;
+
+            return bottomLeft;
+        }
+
+        /// <returns>
+        /// The top right point of the camera plus padding
+        /// </returns>
+        public static Vector2 CalculateMaxCameraBounds(float paddingRight, float paddingTop)
+        {
+            Camera cam = Camera.main;
+
+            Vector3 topRight = cam.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, cam.nearClipPlane));
+
+            topRight.x -= paddingRight;
+            topRight.y -= paddingTop;
+
+            return topRight;
+        }
     }
 
     public class MyRandom

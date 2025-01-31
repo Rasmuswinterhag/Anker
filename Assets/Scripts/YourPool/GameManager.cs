@@ -7,6 +7,8 @@ using UnityEngine.UI;
 using Tools;
 
 using Random = UnityEngine.Random;
+using System.Security.Cryptography;
+using UnityEngine.Tilemaps;
 
 public class GameManager : MonoBehaviour
 {
@@ -30,7 +32,6 @@ public class GameManager : MonoBehaviour
         CaptainSauceDuck,
     }
 
-    //xp Stuff
     [HideInInspector] public float xp;
     [HideInInspector] public int xpNeeded;
     [HideInInspector] public int level;
@@ -45,8 +46,16 @@ public class GameManager : MonoBehaviour
     [Header("References")]
     [SerializeField] Slider slider;
     [SerializeField] TMP_Text coinText;
+    [SerializeField] Tilemap tilemap;
+    [SerializeField] Tile borderTile;
+    [SerializeField] Transform backround;
 
-    [Header("Spawn Positions")]
+
+    [Header("Map Size")]
+    [SerializeField] float paddingLeft;
+    [SerializeField] float paddingRight;
+    [SerializeField] float paddingTop;
+    [SerializeField] float paddingBottom;
     public Vector2 minPos;
     public Vector2 maxPos;
 
@@ -56,7 +65,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject present;
     [SerializeField] GameObject coinPackage;
     public List<Duck> duckArray;
-    public List<Duck> availableDucksList = new();
+    [HideInInspector] public List<Duck> availableDucksList = new();
 
 
     void Awake()
@@ -77,8 +86,8 @@ public class GameManager : MonoBehaviour
     {
         UpdateSlider();
         UpdateSliderMax();
-
         UpdateCoinText();
+        CalculateBounds();
 
         Instantiate(xpDuck, MyRandom.RandomPosition(minPos, maxPos), quaternion.identity);
         xpNeeded = (level + 1) * 1000;
@@ -89,7 +98,7 @@ public class GameManager : MonoBehaviour
         boxTimer += Time.deltaTime;
         if (boxTimer >= boxSpawnTimer)
         {
-            Instantiate(coinPackage, MyRandom.RandomPosition(minPos, maxPos), quaternion.identity);
+            SpawnPackage();
             boxTimer = 0;
         }
 
@@ -97,6 +106,56 @@ public class GameManager : MonoBehaviour
         {
             AddXp(xpNeeded - xp);
         }
+
+        if (Input.GetKeyDown(KeyCode.B))
+        {
+            CalculateBounds(); //TODO: Update only X amount of time after screen size updated
+        }
+    }
+
+    void CalculateBounds()
+    {
+        minPos = TranslateValues.CalculateMinCameraBounds(paddingLeft, paddingBottom);
+        maxPos = TranslateValues.CalculateMaxCameraBounds(paddingRight, paddingTop);
+        Mathf.RoundToInt(minPos.x);
+        Mathf.RoundToInt(minPos.y);
+        Mathf.RoundToInt(maxPos.x);
+        Mathf.RoundToInt(maxPos.y);
+
+        tilemap.ClearAllTiles();
+        for (int x = (int)minPos.x - 1; x <= maxPos.x + 1; x++)
+        {
+            tilemap.SetTile(new Vector3Int(x, (int)minPos.y - 1), borderTile);
+            tilemap.SetTile(new Vector3Int(x, (int)minPos.y - 2), borderTile);
+        }
+
+        for (int y = (int)minPos.y; y <= maxPos.y; y++)
+        {
+            tilemap.SetTile(new Vector3Int((int)maxPos.x + 1, y), borderTile);
+            tilemap.SetTile(new Vector3Int((int)maxPos.x + 2, y), borderTile);
+        }
+
+        for (int x = (int)maxPos.x + 1; x >= minPos.x - 1; x--)
+        {
+            tilemap.SetTile(new Vector3Int(x, (int)maxPos.y), borderTile);
+            tilemap.SetTile(new Vector3Int(x, (int)maxPos.y + 1), borderTile);
+        }
+
+        for (int y = (int)maxPos.y; y >= minPos.y; y--)
+        {
+            tilemap.SetTile(new Vector3Int((int)minPos.x - 1, y), borderTile);
+            tilemap.SetTile(new Vector3Int((int)minPos.x - 2, y), borderTile);
+        }
+
+        backround.localScale = new(Camera.main.orthographicSize * Camera.main.aspect * 2, Camera.main.orthographicSize * 2, 1);
+
+        //TODO: Backround Tiling
+    }
+
+    void OnDrawGizmos()
+    {
+        Gizmos.DrawWireSphere((Vector3)minPos, 0.5f);
+        Gizmos.DrawWireSphere((Vector3)maxPos, 0.5f);
     }
 
     public void AddXp(float amount)

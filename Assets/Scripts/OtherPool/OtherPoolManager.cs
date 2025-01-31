@@ -37,8 +37,6 @@ public class OtherPoolManager : MonoBehaviour
     public void LoadFromInput()
     {
         LoadPool(idInput);
-        //TODO: Get visited users displayname and show it on screen
-        //TODO: Hide visit screen when sucsessfully visited someone
     }
 
     public void LoadPool(FirebaseUser user)
