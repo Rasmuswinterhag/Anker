@@ -112,29 +112,7 @@ public class LogInToFirebase : MonoBehaviour
 
     public void SetDisplayname()
     {
-        if (user != null)
-        {
-            UserProfile profile = new UserProfile
-            {
-                DisplayName = displayNameInput
-            };
-            user.UpdateUserProfileAsync(profile).ContinueWith(task =>
-            {
-                if (task.IsCanceled)
-                {
-                    Debug.LogError("UpdateUserProfileAsync was canceled.");
-                    return;
-                }
-                if (task.IsFaulted)
-                {
-                    Debug.LogError("UpdateUserProfileAsync encountered an error: " + task.Exception);
-                    return;
-                }
-
-                Debug.Log("User profile updated successfully.");
-                SignInOrSetName();
-            });
-        }
+        FirebaseStuff.SetDisplayname(user, displayNameInput);
     }
 
     public void LogInButton()

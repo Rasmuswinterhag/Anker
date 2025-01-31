@@ -182,5 +182,31 @@ namespace Tools
             SceneManager.LoadScene(0);
             Debug.Log("User signed out");
         }
+
+        public static void SetDisplayname(FirebaseUser user, string displayNameInput)
+        {
+            if (user != null)
+            {
+                UserProfile profile = new UserProfile
+                {
+                    DisplayName = displayNameInput
+                };
+                user.UpdateUserProfileAsync(profile).ContinueWith(task =>
+                {
+                    if (task.IsCanceled)
+                    {
+                        Debug.LogError("UpdateUserProfileAsync was canceled.");
+                        return;
+                    }
+                    if (task.IsFaulted)
+                    {
+                        Debug.LogError("UpdateUserProfileAsync encountered an error: " + task.Exception);
+                        return;
+                    }
+                    
+                    Debug.Log("User profile updated successfully.");
+                });
+            }
+        }
     }
 }

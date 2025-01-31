@@ -148,8 +148,6 @@ public class GameManager : MonoBehaviour
         }
 
         backround.localScale = new(Camera.main.orthographicSize * Camera.main.aspect * 2, Camera.main.orthographicSize * 2, 1);
-
-        //TODO: Backround Tiling
     }
 
     void OnDrawGizmos()
