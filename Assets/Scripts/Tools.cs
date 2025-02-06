@@ -203,10 +203,30 @@ namespace Tools
                         Debug.LogError("UpdateUserProfileAsync encountered an error: " + task.Exception);
                         return;
                     }
-                    
+
                     Debug.Log("User profile updated successfully.");
                 });
             }
         }
+    }
+
+    public class Other
+    {
+        public static Transform[] GetAllChildren(GameObject parent)
+        {
+            return GetAllChildren(parent.transform);
+        }
+
+        public static Transform[] GetAllChildren(Transform parent)
+        {
+            List<Transform> children = new();
+            for (int i = 0; i < parent.childCount; i++)
+            {
+                children.Add(parent.GetChild(i));
+            }
+
+            return children.ToArray();
+        }
+
     }
 }
