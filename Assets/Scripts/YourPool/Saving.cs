@@ -254,4 +254,5 @@ public class ShopData
     public int xpFromXpDuckPurchesed = 0;
     public int passiveXpBuffsPurchased = 0;
     public int shorterPackageTimesPurchased = 0;
+    public bool hasBoughtGoldenDuck = false;
 }

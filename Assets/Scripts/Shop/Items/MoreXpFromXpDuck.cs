@@ -6,6 +6,7 @@ public class MoreXpFromXpDuck : ShopItem
     void Awake()
     {
         SetActualCost();
+        gameObject.SetActive(!CheckIfMaxed());
     }
 
     public int SetActualCost()
@@ -29,5 +30,19 @@ public class MoreXpFromXpDuck : ShopItem
         Shop.Instance.SetCostText(actualCost);
 
         XpDuck.xpGiven += Saving.Instance.shopData.xpFromXpDuckPurchesed * 100;
+        gameObject.SetActive(!CheckIfMaxed());
+    }
+
+    public bool CheckIfMaxed()
+    {
+        if (itemData.maxAmount <= -1) { return false; }
+        if (itemData.maxAmount > Saving.Instance.shopData.xpFromXpDuckPurchesed)
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
     }
 }

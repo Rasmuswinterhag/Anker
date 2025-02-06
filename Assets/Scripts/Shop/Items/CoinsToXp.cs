@@ -8,6 +8,7 @@ public class CoinsToXp : ShopItem
     void Awake()
     {
         SetActualCost();
+        gameObject.SetActive(!CheckIfMaxed());
     }
 
     public int SetActualCost()
@@ -23,5 +24,11 @@ public class CoinsToXp : ShopItem
         Debug.Log("coins to xp");
         GameManager.Instance.AddXp(xpTogive);
         Shop.Instance.SetCostText(actualCost);
+        gameObject.SetActive(!CheckIfMaxed());
+    }
+
+    public bool CheckIfMaxed()
+    {
+        return false;
     }
 }

@@ -6,6 +6,7 @@ public class PassiveXp : ShopItem
     void Awake()
     {
         SetActualCost();
+        gameObject.SetActive(!CheckIfMaxed());
     }
 
     public int SetActualCost()
@@ -29,5 +30,19 @@ public class PassiveXp : ShopItem
         Shop.Instance.SetCostText(actualCost);
 
         PassiveXPGain.xpPerSecond++;
+        gameObject.SetActive(!CheckIfMaxed());
+    }
+
+    public bool CheckIfMaxed()
+    {
+        if (itemData.maxAmount <= -1) { return false; }
+        if (itemData.maxAmount > Saving.Instance.shopData.passiveXpBuffsPurchased)
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
     }
 }

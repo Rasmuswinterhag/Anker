@@ -51,6 +51,7 @@ public class Shop : MonoBehaviour
 
     public void SelectItem(ShopItem shopItem)
     {
+        //TODO: If shopitem == null, deselect
         selectedItem = shopItems.IndexOf(shopItem);
         ShopkeeperSay(shopItem.itemData.description);
         SetCostText(shopItem.actualCost);
@@ -58,7 +59,7 @@ public class Shop : MonoBehaviour
 
     public void Buy()
     {
-        if(selectedItem == -1)
+        if (selectedItem == -1)
         {
             ShopkeeperSay("What do you want to buy? You have to select it so i know.");
         }
