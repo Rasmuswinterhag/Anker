@@ -41,6 +41,7 @@ public class GameManager : MonoBehaviour
     public float boxSpawnTimer = 30;
     float boxTimer;
     public int amountOfXpDucks;
+    float cameraWidth;
 
     [Header("References")]
     [SerializeField] Slider slider;
@@ -104,16 +105,16 @@ public class GameManager : MonoBehaviour
         {
             Instantiate(xpDuck, MyRandom.RandomPosition(minPos, maxPos), quaternion.identity);
         }
+        
+        if (Other.CameraWidth() != cameraWidth)
+        {
+            CalculateBounds(); //TODO: Update automatically only X amount of time after screen size updated
+        }
 
 #if UNITY_EDITOR
         if (Input.GetKeyDown(KeyCode.L))
         {
             AddXp(xpNeeded - xp);
-        }
-
-        if (Input.GetKeyDown(KeyCode.B))
-        {
-            CalculateBounds(); //TODO: Update automatically only X amount of time after screen size updated
         }
 
         if (Input.GetKeyDown(KeyCode.M))
@@ -125,6 +126,7 @@ public class GameManager : MonoBehaviour
 
     void CalculateBounds()
     {
+        cameraWidth = Other.CameraWidth();
         minPos = TranslateValues.CalculateMinCameraBounds(paddingLeft, paddingBottom);
         maxPos = TranslateValues.CalculateMaxCameraBounds(paddingRight, paddingTop);
         Mathf.RoundToInt(minPos.x);

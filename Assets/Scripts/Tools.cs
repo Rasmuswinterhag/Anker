@@ -212,11 +212,23 @@ namespace Tools
 
     public class Other
     {
+        /// <summary>
+        /// Cets all children of a gameobject
+        /// </summary>
+        /// <returns>
+        // An array of Transforms
+        // </returns>
         public static Transform[] GetAllChildren(GameObject parent)
         {
             return GetAllChildren(parent.transform);
         }
 
+        /// <summary>
+        /// Cets all children of a transform
+        /// </summary>
+        /// <returns>
+        // An array of Transforms
+        // </returns>
         public static Transform[] GetAllChildren(Transform parent)
         {
             List<Transform> children = new();
@@ -228,5 +240,21 @@ namespace Tools
             return children.ToArray();
         }
 
+        /// <returns>
+        /// Camera Width of Camera.main
+        /// </returns>
+        public static float CameraWidth()
+        {
+            return CameraWidth(Camera.main);
+        }
+
+        /// <param name="camera"></param>
+        /// <returns>
+        /// Camera Width of <paramref name="camera"/>
+        /// </returns>
+        public static float CameraWidth(Camera camera)
+        {
+            return camera.orthographicSize * camera.aspect * 2;
+        }
     }
 }
