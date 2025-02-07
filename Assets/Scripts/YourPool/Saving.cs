@@ -204,6 +204,8 @@ public class Saving : MonoBehaviour
     public void RemoveAllData()
     {
         SetDefaultData();
+        PassiveXPGain.xpPerSecond = 1; // The default 
+        XpDuck.xpGiven = 100; // The default 
         database.RootReference.Child("users").Child(user.UserId).SetRawJsonValueAsync(JsonUtility.ToJson(defaultData));
         PlayerPrefs.DeleteAll();
         Debug.LogWarning("Save Deleted");

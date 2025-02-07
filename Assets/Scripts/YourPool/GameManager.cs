@@ -100,12 +100,12 @@ public class GameManager : MonoBehaviour
             SpawnPackage();
             boxTimer = 0;
         }
-
-        if(FindObjectsOfType<XpDuck>().Count() < amountOfXpDucks)
+        if (FindObjectsOfType<XpDuck>().Count() < amountOfXpDucks)
         {
             Instantiate(xpDuck, MyRandom.RandomPosition(minPos, maxPos), quaternion.identity);
         }
 
+#if UNITY_EDITOR
         if (Input.GetKeyDown(KeyCode.L))
         {
             AddXp(xpNeeded - xp);
@@ -120,6 +120,7 @@ public class GameManager : MonoBehaviour
         {
             AddCoins(100);
         }
+#endif
     }
 
     void CalculateBounds()

@@ -80,10 +80,15 @@ public class OtherPoolManager : MonoBehaviour
             poolUsersName.gameObject.SetActive(true);
             Debug.LogFormat("Loaded {0}'s pool ({1})", data.displayName, userId);
         });
-    }
+    } 
 
     public void GoHome()
     {
         SceneManager.LoadScene(1);
+    }
+
+    public void ReloadScene()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }
