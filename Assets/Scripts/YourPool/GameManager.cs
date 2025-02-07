@@ -5,10 +5,8 @@ using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.UI;
 using Tools;
-
-using Random = UnityEngine.Random;
-using System.Security.Cryptography;
 using UnityEngine.Tilemaps;
+using System.Linq;
 
 public class GameManager : MonoBehaviour
 {
@@ -35,13 +33,14 @@ public class GameManager : MonoBehaviour
     [HideInInspector] public float xp;
     [HideInInspector] public int xpNeeded;
     [HideInInspector] public int level;
-    [HideInInspector] public int coins;
+    public int coins;
 
     //other stuff
     Vector3 midPoint = new Vector3(10.5f, 5f, 0f);
     public static GameManager Instance;
-    [SerializeField] float boxSpawnTimer = 30;
+    public float boxSpawnTimer = 30;
     float boxTimer;
+    public int amountOfXpDucks;
 
     [Header("References")]
     [SerializeField] Slider slider;
@@ -84,12 +83,12 @@ public class GameManager : MonoBehaviour
     }
     private void Start()
     {
+        Application.targetFrameRate = 60;
         UpdateSlider();
         UpdateSliderMax();
         UpdateCoinText();
         CalculateBounds();
 
-        Instantiate(xpDuck, MyRandom.RandomPosition(minPos, maxPos), quaternion.identity);
         xpNeeded = (level + 1) * 1000;
     }
 
@@ -102,6 +101,11 @@ public class GameManager : MonoBehaviour
             boxTimer = 0;
         }
 
+        if(FindObjectsOfType<XpDuck>().Count() < amountOfXpDucks)
+        {
+            Instantiate(xpDuck, MyRandom.RandomPosition(minPos, maxPos), quaternion.identity);
+        }
+
         if (Input.GetKeyDown(KeyCode.L))
         {
             AddXp(xpNeeded - xp);
@@ -109,7 +113,12 @@ public class GameManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.B))
         {
-            CalculateBounds(); //TODO: Update only X amount of time after screen size updated
+            CalculateBounds(); //TODO: Update automatically only X amount of time after screen size updated
+        }
+
+        if (Input.GetKeyDown(KeyCode.M))
+        {
+            AddCoins(100);
         }
     }
 
@@ -150,7 +159,7 @@ public class GameManager : MonoBehaviour
         backround.localScale = new(Camera.main.orthographicSize * Camera.main.aspect * 2, Camera.main.orthographicSize * 2, 1);
     }
 
-    void OnDrawGizmos()
+    void OnDrawGizmosSelected()
     {
         Gizmos.DrawWireSphere((Vector3)minPos, 0.5f);
         Gizmos.DrawWireSphere((Vector3)maxPos, 0.5f);

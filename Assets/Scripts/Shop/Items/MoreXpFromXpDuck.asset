@@ -19,6 +19,6 @@ MonoBehaviour:
 
 
     Get more Xp for popping them!'
-  cost: 500
+  cost: 100
   costMultiplier: 1
   maxAmount: 9

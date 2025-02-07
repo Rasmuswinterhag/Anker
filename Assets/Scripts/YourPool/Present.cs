@@ -34,7 +34,7 @@ public class Present : MonoBehaviour
     public void PlaceDuck(Duck duck)
     {
         Instantiate(duck, transform.position, transform.rotation, GameManager.Instance.transform);
-        Saving.Instance.SaveGame();
+        //Saving.Instance.SaveGame(); //opening too many presents at once makes firebase not load sometimes. probobly to stop bot attacks
         Destroy(gameObject);
     }
 }

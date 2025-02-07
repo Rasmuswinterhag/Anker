@@ -20,6 +20,6 @@ MonoBehaviour:
 
     They dont get paid enough to be fast by the delivery
     company. So we have to do it for them....'
-  cost: 250
+  cost: 25
   costMultiplier: 1.1
   maxAmount: 20

@@ -12,14 +12,15 @@ public class Saving : MonoBehaviour
 {
     [SerializeField, Tooltip("Which ducks to save in addition to the ones in the GameManager array")] Duck[] additionalDucksToCount;
     List<Duck> allDucks = new();
-    [HideInInspector] public int timeBetweenAutosaves = 30;
+    [HideInInspector] public int timeBetweenAutosaves = 60;
     float autosaveTimer;
     static public Saving Instance;
     PlayerData defaultData;
     FirebaseDatabase database;
     FirebaseUser user;
     [SerializeField] GameObject saveIcon;
-
+    public ShopData shopData = new ShopData();
+    bool startUpFocusHasHappend = false;
 
     public void Startup() //Called when GameManager is setup
     {
@@ -53,6 +54,10 @@ public class Saving : MonoBehaviour
         {
             defaultData.availableDucks.Add(item.duckType);
         }
+        defaultData.shopData.passiveXpBuffsPurchased = 0;
+        defaultData.shopData.shorterPackageTimesPurchased = 0;
+        defaultData.shopData.xpDucksPurchased = 0;
+        defaultData.shopData.xpFromXpDuckPurchesed = 0;
     }
 
     void Awake()
@@ -80,13 +85,15 @@ public class Saving : MonoBehaviour
     public void SaveGame()
     {
         saveIcon.SetActive(true);
-        PlayerData data = new PlayerData();
-        data.displayName = user.DisplayName;
-        data.coins = GameManager.Instance.coins;
-        data.xp = GameManager.Instance.xp;
-        data.xpNeeded = GameManager.Instance.xpNeeded;
-        data.level = GameManager.Instance.level;
-        data.UID = user.UserId;
+        PlayerData playerData = new PlayerData();
+
+        playerData.displayName = user.DisplayName;
+        playerData.coins = GameManager.Instance.coins;
+        playerData.xp = GameManager.Instance.xp;
+        playerData.xpNeeded = GameManager.Instance.xpNeeded;
+        playerData.level = GameManager.Instance.level;
+        playerData.UID = user.UserId;
+        playerData.shopData = shopData;
 
         List<Duck> duckObjects = FindObjectsOfType<Duck>().ToList();
         List<GameManager.DuckTypes> ownedDucks = new();
@@ -97,19 +104,21 @@ public class Saving : MonoBehaviour
 
         foreach (GameManager.DuckTypes duckType in ownedDucks) //adds all the owned ducks to save data
         {
-            data.ownedDucks.Add(duckType);
+            playerData.ownedDucks.Add(duckType);
         }
 
         foreach (var avilableDuck in GameManager.Instance.availableDucksList) //adds all the unowned ducks to save data
         {
-            data.availableDucks.Add(avilableDuck.duckType);
+            playerData.availableDucks.Add(avilableDuck.duckType);
         }
 
-        database.RootReference.Child("users").Child(user.UserId).SetRawJsonValueAsync(JsonUtility.ToJson(data));
+        database.RootReference.Child("users").Child(user.UserId).SetRawJsonValueAsync(JsonUtility.ToJson(playerData)).ContinueWithOnMainThread(task =>
+        {
+            saveIcon.SetActive(false);
+            SaveSettings();
+            Debug.Log("Saved");
+        });
 
-        SaveSettings();
-        Debug.Log("Saved");
-        saveIcon.SetActive(false);
     }
 
     public void SaveSettings()
@@ -147,6 +156,16 @@ public class Saving : MonoBehaviour
 
             GameManager.Instance.SetCoins(data.coins);
             GameManager.Instance.SetXp(data.xp, data.xpNeeded, data.level);
+            PassiveXPGain.xpPerSecond = (PassiveXPGain.xpPerSecond * data.shopData.passiveXpBuffsPurchased) + PassiveXPGain.xpPerSecond;
+            XpDuck.xpGiven = (XpDuck.xpGiven * data.shopData.xpFromXpDuckPurchesed) + XpDuck.xpGiven;
+            GameManager.Instance.boxSpawnTimer -= data.shopData.shorterPackageTimesPurchased;
+            GameManager.Instance.amountOfXpDucks = data.shopData.xpDucksPurchased + 1; //+1 because you start with one
+
+            shopData.passiveXpBuffsPurchased = data.shopData.passiveXpBuffsPurchased;
+            shopData.shorterPackageTimesPurchased = data.shopData.shorterPackageTimesPurchased;
+            shopData.xpDucksPurchased = data.shopData.xpDucksPurchased;
+            shopData.xpFromXpDuckPurchesed = data.shopData.xpFromXpDuckPurchesed;
+
 
             for (int i = 0; i < data.ownedDucks.Count; i++)
             {
@@ -191,12 +210,6 @@ public class Saving : MonoBehaviour
         ReloadScene();
     }
 
-    void ResetSettings()
-    {
-        PlayerPrefs.SetInt("autosaveTime", 30);
-        PlayerPrefs.SetInt("zoomAllowed", TranslateValues.BoolToInt(true));
-    }
-
     public void ReloadScene()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
@@ -209,19 +222,37 @@ public class Saving : MonoBehaviour
 
     void OnApplicationFocus()
     {
-        SaveGame();
+        if (startUpFocusHasHappend)
+        {
+            SaveGame();
+        }
+        else
+        {
+            startUpFocusHasHappend = true;
+        }
     }
 }
 
 
 public class PlayerData
 {
-    public string UID;
-    public int coins;
-    public float xp;
-    public int xpNeeded;
-    public int level;
-    public string displayName;
+    public string UID = "";
+    public int coins = 0;
+    public float xp = 0;
+    public int xpNeeded = 0;
+    public int level = 0;
+    public string displayName = "";
     public List<GameManager.DuckTypes> ownedDucks = new();
     public List<GameManager.DuckTypes> availableDucks = new();
+    public ShopData shopData = new(); //For some reason this doesnt get pushed to firebase i give up for today
+}
+
+[Serializable]
+public class ShopData
+{
+    public int xpDucksPurchased = 0;
+    public int xpFromXpDuckPurchesed = 0;
+    public int passiveXpBuffsPurchased = 0;
+    public int shorterPackageTimesPurchased = 0;
+    public bool hasBoughtGoldenDuck = false;
 }

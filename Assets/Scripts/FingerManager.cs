@@ -9,8 +9,6 @@ public class FingerManager : MonoBehaviour
     List<GameObject> fingers = new();
     [SerializeField] int minFingers = 5;
 
-    int combinedTouchAndMouseCount;
-
     void Start()
     {
         for (int i = 0; i < minFingers; i++)
@@ -29,6 +27,7 @@ public class FingerManager : MonoBehaviour
 
     void Update()
     {
+        if (Shop.Instance != null && Shop.Instance.gameObject.activeSelf) { return; }
         while (fingers.Count < Input.touchCount)
         {
             NewFinger();

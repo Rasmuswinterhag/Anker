@@ -57,7 +57,7 @@ public class FocusDuck : MonoBehaviour
                     Mathf.Clamp(focusObject.transform.position.y, clampY[0], clampY[1]),
                     transform.position.z);
 
-            if (Input.touchCount <= 0) { SmoothCamera(); }
+            if (Input.touchCount <= 0 || Input.GetMouseButtonDown(0)) { SmoothCamera(); }
         }
     }
     void SmoothCamera()

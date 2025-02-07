@@ -1,12 +1,30 @@
+using System;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
-[CreateAssetMenu(fileName = "New Shop Item", menuName = "Shop/Item", order = -1)]
-public class ShopItem : ScriptableObject
+public class ShopItem : MonoBehaviour
 {
-    public string itemName;
-    public Sprite image;
-    [TextArea(3, 5)] public string description;
-    public int cost;
-    public float costMultiplier;
-    public int maxAmount = 1;
+    public ShopItemData itemData;
+
+    [Header("References")]
+    [SerializeField] Image image;
+    [SerializeField] TMP_Text nameField;
+    public int actualCost;
+
+    void Start()
+    {
+        image.sprite = itemData.image;
+        nameField.text = itemData.itemName;
+    }
+
+    public void OnClick()
+    {
+        Shop.Instance.SelectItem(this);
+    }
+
+    public virtual void Purchase()
+    {
+        throw new NotImplementedException();
+    }
 }
