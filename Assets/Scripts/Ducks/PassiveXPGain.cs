@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PassiveXPGain : MonoBehaviour
 {
-    [SerializeField] float xpPerSecond = 1;
+    public static float xpPerSecond = 1;
 
     void Start()
     {

@@ -6,7 +6,7 @@ using Tools;
 public class XpDuck : MonoBehaviour
 {
     [SerializeField] float speedNeeded = 2f;
-    [SerializeField] float xpGiven = 100f;
+    public static float xpGiven = 100f;
 
     private void OnCollisionEnter2D(Collision2D other)
     {
