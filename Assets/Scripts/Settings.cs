@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Firebase.Auth;
 using UnityEngine.SceneManagement;
+using Tools;
 
 public class Settings : MonoBehaviour
 {
@@ -29,7 +30,8 @@ public class Settings : MonoBehaviour
             Destroy(this);
         }
         user = FirebaseAuth.DefaultInstance.CurrentUser;
-        UID.text = user.UserId;
+        if (FirebaseStuff.IsLoggedIn()) { UID.text = user.UserId; }
+
     }
 
     public void UpdateAutosaveSlider()

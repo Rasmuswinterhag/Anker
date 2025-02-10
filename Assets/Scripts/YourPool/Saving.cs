@@ -84,6 +84,7 @@ public class Saving : MonoBehaviour
 
     public void SaveGame()
     {
+        if (!FirebaseStuff.IsLoggedIn()) { return; }
         saveIcon.SetActive(true);
         PlayerData playerData = new PlayerData();
 
@@ -136,6 +137,7 @@ public class Saving : MonoBehaviour
 
     public void LoadGame()
     {
+        if (!FirebaseStuff.IsLoggedIn()) { return; }
         PlayerData data = new();
         //Set data from firebase
         database.RootReference.Child("users").Child(user.UserId).GetValueAsync().ContinueWithOnMainThread(task =>

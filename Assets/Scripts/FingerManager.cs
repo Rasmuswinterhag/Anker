@@ -25,7 +25,7 @@ public class FingerManager : MonoBehaviour
     }
 
 
-    void Update()
+    void FixedUpdate()
     {
         if (Shop.Instance != null && Shop.Instance.gameObject.activeSelf) { return; }
         while (fingers.Count < Input.touchCount)

@@ -10,6 +10,7 @@ public class RocketDuck : MonoBehaviour
     float speed;
     Animator anim;
     Rigidbody2D rb;
+    ParticleSystem pSystem;
     float timer;
 
     // Start is called before the first frame update
@@ -17,6 +18,7 @@ public class RocketDuck : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
+        pSystem = GetComponent<ParticleSystem>();
         timer = rocketCooldown;
     }
 
@@ -32,11 +34,13 @@ public class RocketDuck : MonoBehaviour
             {
                 rb.AddForce(transform.up * rocketPower);
                 anim.Play("RocketDuckRocketing");
+                pSystem.Play();
             }
             else
             {
                 timer = 0f;
                 anim.Play("RocketDuckIdle");
+                pSystem.Stop();
             }
         }
     }

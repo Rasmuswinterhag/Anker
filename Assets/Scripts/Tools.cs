@@ -208,6 +208,20 @@ namespace Tools
                 });
             }
         }
+
+        public static bool IsLoggedIn()
+        {
+            if (FirebaseAuth.DefaultInstance.CurrentUser == null)
+            {
+                Debug.LogWarning("Player is NOT logged in");
+                return false;
+            }
+            else
+            {
+                Debug.LogWarning("Player is logged in");
+                return true;
+            }
+        }
     }
 
     public class Other
