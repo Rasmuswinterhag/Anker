@@ -164,7 +164,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speedNeeded: 3.5
-  xpGiven: 100
+  particle: {fileID: 1234151649087095905, guid: a1a426d928fdcd540b314044324b2e78, type: 3}
 --- !u!114 &-7470355784874151995
 MonoBehaviour:
   m_ObjectHideFlags: 0
