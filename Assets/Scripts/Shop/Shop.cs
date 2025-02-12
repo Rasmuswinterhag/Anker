@@ -55,7 +55,6 @@ public class Shop : MonoBehaviour
 
     public void SelectItem(ShopItem shopItem)
     {
-        //TODO: If shopitem == null, deselect
         if (shopItem == null)
         {
             OnEnable();
@@ -79,8 +78,6 @@ public class Shop : MonoBehaviour
         ShopItemData item = shopItems[selectedItem].itemData;
         ShopItem shopItem = shopItems[selectedItem];
 
-        //TODO: Have limit to bought items, negative uses is infinite
-        //TODO: Save the upgrades bought
         if (GameManager.Instance.coins >= shopItem.actualCost)
         {
             shopItem.Purchase();

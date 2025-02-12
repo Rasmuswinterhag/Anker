@@ -36,10 +36,7 @@ public class XpDuck : MonoBehaviour
         for (int i = 0; i < xpGiven; i += 20)
         {
             xpOrbObjectPool.RequestXpOrb(transform);
-            //TODO: Theese particles will go over to the xp bar to show that popping theese ducks gives you xp
         }
-
-        //GameManager.Instance.AddXp(xpGiven); ///TODO: Maybe give xp when the "particles" get to the xp bar
         ResetDuck();
     }
 
