@@ -30,11 +30,15 @@ public class Shop : MonoBehaviour
 
     void OnEnable()
     {
+        selectedItem = -1;
         ShopkeeperSay(greetings[Random.Range(0, greetings.Length)]);
-
         foreach (Transform child in Other.GetAllChildren(shopItemsContent))
         {
-            shopItems.Add(child.GetComponent<ShopItem>());
+            ShopItem childComponent = child.GetComponent<ShopItem>();
+            if (!shopItems.Contains(childComponent))
+            {
+                shopItems.Add(childComponent);
+            }
         }
     }
 
@@ -52,9 +56,17 @@ public class Shop : MonoBehaviour
     public void SelectItem(ShopItem shopItem)
     {
         //TODO: If shopitem == null, deselect
-        selectedItem = shopItems.IndexOf(shopItem);
-        ShopkeeperSay(shopItem.itemData.description);
-        SetCostText(shopItem.actualCost);
+        if (shopItem == null)
+        {
+            OnEnable();
+        }
+        else
+        {
+            selectedItem = shopItems.IndexOf(shopItem);
+            ShopkeeperSay(shopItem.itemData.description);
+            SetCostText(shopItem.actualCost);
+        }
+
     }
 
     public void Buy()

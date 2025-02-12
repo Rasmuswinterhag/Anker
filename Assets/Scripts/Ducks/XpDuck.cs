@@ -5,9 +5,15 @@ using Tools;
 
 public class XpDuck : MonoBehaviour
 {
+    XpOrbObjectPool xpOrbObjectPool;
     [SerializeField] float speedNeeded = 2f;
     [SerializeField] GameObject particle;
     public static float xpGiven = 100f;
+
+    void Start()
+    {
+        xpOrbObjectPool = FindObjectOfType<XpOrbObjectPool>();
+    }
 
     private void OnCollisionEnter2D(Collision2D other)
     {
@@ -29,14 +35,11 @@ public class XpDuck : MonoBehaviour
     {
         for (int i = 0; i < xpGiven; i += 20)
         {
-            Vector2 spawnPos = transform.position;
-            
-
-            Instantiate(particle, spawnPos, Quaternion.identity);
+            xpOrbObjectPool.RequestXpOrb(transform);
             //TODO: Theese particles will go over to the xp bar to show that popping theese ducks gives you xp
         }
 
-        GameManager.Instance.AddXp(xpGiven); ///TODO: Maybe give xp when the "particles" get to the xp bar
+        //GameManager.Instance.AddXp(xpGiven); ///TODO: Maybe give xp when the "particles" get to the xp bar
         ResetDuck();
     }
 

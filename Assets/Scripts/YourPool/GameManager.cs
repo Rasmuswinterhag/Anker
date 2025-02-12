@@ -106,7 +106,7 @@ public class GameManager : MonoBehaviour
             Instantiate(xpDuck, MyRandom.RandomPosition(minPos, maxPos), quaternion.identity);
         }
         
-        if (Other.CameraWidth() != cameraWidth)
+        if (Other.CameraWidth() != cameraWidth && !FocusDuck.isFocusing)
         {
             CalculateBounds(); //TODO: Update automatically only X amount of time after screen size updated
         }

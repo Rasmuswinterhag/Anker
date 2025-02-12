@@ -23,6 +23,7 @@ public class FocusDuck : MonoBehaviour
     GameObject focusObject;
     Camera mCam;
     Settings settings;
+    public static bool isFocusing = false;
     public static FocusDuck Instance { get; private set; }
 
     void Awake()
@@ -67,16 +68,17 @@ public class FocusDuck : MonoBehaviour
 
     public void Focus(GameObject touchObject)
     {
-        if (settings.allowZoom)
-        {
-            focusObject = touchObject;
-            mCam.orthographicSize = zoomOrthographicSize;
-            ZoomButtonVisible(true);
-        }
+        if (!settings.allowZoom) { return; }
+
+        isFocusing = true;
+        focusObject = touchObject;
+        mCam.orthographicSize = zoomOrthographicSize;
+        ZoomButtonVisible(true);
     }
 
     public void ExitFocus()
     {
+        isFocusing = false;
         focusObject = null;
         transform.position = defaultPos;
         mCam.orthographicSize = defaultCamSize;

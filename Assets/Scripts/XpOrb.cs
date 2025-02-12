@@ -1,21 +1,20 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
-using Tools;
-using UnityEditor.Rendering;
 
-public class GoToXpBar : MonoBehaviour
+public class XpOrb : MonoBehaviour
 {
     Transform xpBar;
     Vector3 targetPosition;
-
     bool hasGoneOut = false;
 
     void Start()
     {
         xpBar = GameObject.FindGameObjectWithTag("Slider").transform;
+    }
+
+    void OnEnable()
+    {
         targetPosition = (Vector2)transform.position + Random.insideUnitCircle * 2.5f;
+        hasGoneOut = false;
     }
 
     void Update()
@@ -29,7 +28,8 @@ public class GoToXpBar : MonoBehaviour
         {
             if (hasGoneOut)
             {
-                Destroy(gameObject); //TODO: Should use object pool instead
+                GameManager.Instance.AddXp(XpDuck.xpGiven / 20);
+                FindObjectOfType<XpOrbObjectPool>().Deactivate(this);
             }
             else
             {
