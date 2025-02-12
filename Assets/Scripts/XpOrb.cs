@@ -3,12 +3,14 @@ using UnityEngine;
 public class XpOrb : MonoBehaviour
 {
     Transform xpBar;
+    GetSliderPositions sliderPositions;
     Vector3 targetPosition;
     bool hasGoneOut = false;
 
     void Start()
     {
         xpBar = GameObject.FindGameObjectWithTag("Slider").transform;
+        sliderPositions = xpBar.GetComponent<GetSliderPositions>();
     }
 
     void OnEnable()
@@ -33,7 +35,7 @@ public class XpOrb : MonoBehaviour
             }
             else
             {
-                targetPosition = Camera.main.ScreenToWorldPoint(xpBar.position); //Id want this to go to the edge of the current Xp on the bar fill
+                targetPosition = sliderPositions.GetProgressPositonWorld(); //Id want this to go to the edge of the current Xp on the bar fill
                 hasGoneOut = true;
             }
         }

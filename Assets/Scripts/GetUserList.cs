@@ -20,7 +20,7 @@ public class GetUserList : MonoBehaviour
         {
 
             List<PlayerData> pData = new();
-            Debug.Log(task.Result.ChildrenCount + "users");
+            Debug.Log(task.Result.ChildrenCount + " users");
             foreach (var item in task.Result.Children)
             {
                 pData.Add(JsonUtility.FromJson<PlayerData>(item.GetRawJsonValue()));
