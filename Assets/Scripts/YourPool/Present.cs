@@ -4,13 +4,28 @@ using UnityEngine;
 
 public class Present : MonoBehaviour
 {
+    [SerializeField] float speedNeeded = 0.5f;
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnCollisionEnter2D(Collision2D other)
     {
-        if (collision.CompareTag("Finger"))
+        Rigidbody2D otherRb = other.gameObject.GetComponent<Rigidbody2D>();
+        float OtherSpeed = otherRb.velocity.magnitude;
+
+        if (OtherSpeed <= 0)
         {
-            SpawnDuckFromPresent();
+            OtherSpeed = -OtherSpeed;
         }
+
+        if ((OtherSpeed >= speedNeeded || OtherSpeed <= -speedNeeded) && other.gameObject.CompareTag("Duck"))
+        {
+            Pop();
+        }
+    }
+
+    void Pop()
+    {
+        SpawnDuckFromPresent();
+        //TODO: confetti
     }
 
     void SpawnDuckFromPresent()
