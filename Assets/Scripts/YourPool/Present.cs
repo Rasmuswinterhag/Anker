@@ -5,6 +5,7 @@ using UnityEngine;
 public class Present : MonoBehaviour
 {
     [SerializeField] float speedNeeded = 0.5f;
+    [SerializeField] GameObject particleSpawner;
 
     private void OnCollisionEnter2D(Collision2D other)
     {
@@ -25,7 +26,9 @@ public class Present : MonoBehaviour
     void Pop()
     {
         SpawnDuckFromPresent();
-        //TODO: confetti
+        Vector3 particleSpawnPosition = transform.position;
+        particleSpawnPosition.z -= 0.1f;
+        Instantiate(particleSpawner, particleSpawnPosition, Quaternion.identity);
     }
 
     void SpawnDuckFromPresent()

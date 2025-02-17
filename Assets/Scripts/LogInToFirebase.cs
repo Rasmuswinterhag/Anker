@@ -20,6 +20,7 @@ public class LogInToFirebase : MonoBehaviour
 
     void Start()
     {
+        FirebaseDatabase.DefaultInstance.SetPersistenceEnabled(false);
         auth = FirebaseAuth.DefaultInstance;
 
         if(auth.CurrentUser != null)

@@ -8442,6 +8442,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: ShopItem
       objectReference: {fileID: 0}
+    - target: {fileID: 8112289613064579403, guid: c3aa370a87cd1de45966594f8f6c6d45, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 6422097958178070024, guid: c3aa370a87cd1de45966594f8f6c6d45, type: 3}
     m_RemovedGameObjects: []
