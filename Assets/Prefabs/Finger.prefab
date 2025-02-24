@@ -197,4 +197,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 932bf475b25ad2147894b09eda3bb814, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pushForce: 100
+  mousePushForce: 75
+  mobilePushForce: 150

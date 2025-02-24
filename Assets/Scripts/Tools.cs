@@ -42,7 +42,7 @@ namespace Tools
     public class TranslateValues
     {
         /// <summary>
-        /// Makes an int into a bool (accepts 1 or 0)
+        /// Makes an int into a bool (accepts 1 or 0), useful when saving to playerprefs
         /// </summary>
         /// <returns>
         /// 1 = true,
@@ -64,7 +64,7 @@ namespace Tools
         }
 
         /// <summary>
-        /// Makes a bool into an int
+        /// Makes a bool into an int, useful when saving to playerprefs
         /// </summary>
         /// <returns>
         /// true = 1,
@@ -218,7 +218,7 @@ namespace Tools
             }
             else
             {
-                Debug.LogWarning("Player is logged in");
+                Debug.Log("Player is logged in: " + FirebaseAuth.DefaultInstance.CurrentUser.Email);
                 return true;
             }
         }

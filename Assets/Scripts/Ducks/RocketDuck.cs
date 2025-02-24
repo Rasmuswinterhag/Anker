@@ -12,6 +12,8 @@ public class RocketDuck : MonoBehaviour
     Rigidbody2D rb;
     ParticleSystem pSystem;
     float timer;
+    AudioSource audioSource;
+    bool rocketing = false;
 
     // Start is called before the first frame update
     void Start()
@@ -19,6 +21,7 @@ public class RocketDuck : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         pSystem = GetComponent<ParticleSystem>();
+        audioSource = GetComponent<AudioSource>();
         timer = rocketCooldown;
     }
 
@@ -33,15 +36,32 @@ public class RocketDuck : MonoBehaviour
             if (speed < rocketSpeed)
             {
                 rb.AddForce(transform.up * rocketPower);
-                anim.Play("RocketDuckRocketing");
-                pSystem.Play();
+                audioSource.pitch = Random.Range(0.9f, 1.1f);
+                RocketStart();
             }
             else
             {
                 timer = 0f;
-                anim.Play("RocketDuckIdle");
-                pSystem.Stop();
+                RocketStop();
             }
         }
+    }
+
+    void RocketStart()
+    {
+        if (rocketing) { return; }
+        rocketing = true;
+        anim.Play("RocketDuckRocketing");
+        pSystem.Play();
+        audioSource.Play();
+    }
+
+    void RocketStop()
+    {
+        if (!rocketing) { return; }
+        rocketing = false;
+        anim.Play("RocketDuckIdle");
+        pSystem.Stop();
+        audioSource.Stop();
     }
 }

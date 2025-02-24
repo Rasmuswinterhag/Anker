@@ -14,7 +14,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8936842960399145414, guid: be5558d783d9a374dbd29260e9e84b68, type: 3}
       propertyPath: m_Name
-      value: ChonerrDuck
+      value: ChonkerDuck
       objectReference: {fileID: 0}
     - target: {fileID: 8936842960399145415, guid: be5558d783d9a374dbd29260e9e84b68, type: 3}
       propertyPath: m_Size.x
