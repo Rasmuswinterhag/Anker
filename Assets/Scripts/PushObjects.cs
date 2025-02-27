@@ -8,16 +8,17 @@ public class PushObjects : MonoBehaviour
     [SerializeField] float mobilePushForce = 100f;
 
     //push
-    private void OnTriggerEnter2D(Collider2D other)
+    void OnTriggerStay2D(Collider2D other)
     {
         Vector2 pushVector = other.transform.position - transform.position;
-        if (Input.touchCount > 0)
+        Debug.Log(Input.touchCount, this);
+        if (Input.touchCount == 0)
         {
-            other.gameObject.GetComponent<Rigidbody2D>().AddForce(pushVector.normalized * mobilePushForce);
+            other.gameObject.GetComponent<Rigidbody2D>().AddForce(pushVector.normalized * mousePushForce);
         }
         else
         {
-            other.gameObject.GetComponent<Rigidbody2D>().AddForce(pushVector.normalized * mousePushForce);
+            other.gameObject.GetComponent<Rigidbody2D>().AddForce(pushVector.normalized * mobilePushForce);
         }
     }
 }
